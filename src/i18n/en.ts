@@ -101,6 +101,23 @@ export const en = {
     gateCallout: "Clue 4 is the code for the doors: {code}",
     orSolveHere: "Prefer to solve it here? Use the native version below.",
   },
+  source: {
+    heading: "The reference check",
+    intro: "Classify each reference. Four or more correct opens the desk drawer.",
+    progress: "{correct} of {total} classified correctly",
+    referenceLabel: "Reference {num}",
+    categories: {
+      verifiable: "Verifiable",
+      fabricated: "Fabricated",
+      "publisher-as-author": "Publisher as author",
+      "bare-domain": "Bare domain",
+    },
+    correct: "Correct.",
+    incorrect: "Not quite. See why below.",
+    passCallout: "The desk drawer clicks open: the code is {code}.",
+    failNote: "You need at least {threshold} of {total}. Reset and look again.",
+    retry: "Try again",
+  },
   check: {
     heading: "Video check",
     intro: "Two quick questions on the reasoning-LLMs video.",

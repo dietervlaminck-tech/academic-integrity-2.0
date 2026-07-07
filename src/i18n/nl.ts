@@ -102,6 +102,23 @@ export const nl: Dict = {
     gateCallout: "Aanwijzing 4 is de code voor de deuren: {code}",
     orSolveHere: "Los je het liever hier op? Gebruik de ingebouwde versie hieronder.",
   },
+  source: {
+    heading: "De broncontrole",
+    intro: "Classificeer elke bronvermelding. Vier of meer goed opent de bureaulade.",
+    progress: "{correct} van {total} juist geclassificeerd",
+    referenceLabel: "Bron {num}",
+    categories: {
+      verifiable: "Verifieerbaar",
+      fabricated: "Verzonnen",
+      "publisher-as-author": "Uitgever als auteur",
+      "bare-domain": "Kaal domein",
+    },
+    correct: "Correct.",
+    incorrect: "Net niet. Zie hieronder waarom.",
+    passCallout: "De bureaulade klikt open: de code is {code}.",
+    failNote: "Je hebt minstens {threshold} van {total} nodig. Reset en kijk nog eens.",
+    retry: "Opnieuw proberen",
+  },
   check: {
     heading: "Videocheck",
     intro: "Twee korte vragen over de video over redeneer-LLM's.",
