@@ -613,6 +613,36 @@ a {
   font-weight: 600;
 }
 
+/* ---------- Source checker (Room 3) ---------- */
+.src {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ny-border);
+}
+.src__item {
+  margin-bottom: 1.5rem;
+}
+.src__ref {
+  margin: 0.1rem 0 0.6rem;
+}
+.src__ref code {
+  display: block;
+  background: var(--ny-light-bg);
+  border: 1px solid var(--ny-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+.src__cats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 520px) {
+  .src__cats {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Question check (Room 2 video check) ---------- */
 .qcheck {
   margin-top: 1.5rem;

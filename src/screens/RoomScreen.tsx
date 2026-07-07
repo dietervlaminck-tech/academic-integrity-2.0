@@ -4,6 +4,7 @@ import { hints as puzzleHints } from "../content/puzzles";
 import { RoomShell } from "../components/RoomShell";
 import { QuestionCheck } from "../components/QuestionCheck";
 import { TokenPredictor } from "../components/TokenPredictor";
+import { SourceChecker } from "../components/SourceChecker";
 import { Crossword } from "../components/Crossword";
 import { ExternalEmbed } from "../components/ExternalEmbed";
 import { CodeGate } from "../components/CodeGate";
@@ -74,6 +75,8 @@ export function RoomScreen({ room }: { room: Room }) {
           <TokenPredictor />
         </>
       )}
+
+      {room === "STUDY" && <SourceChecker />}
 
       {room === "DOOR" && (
         <div>

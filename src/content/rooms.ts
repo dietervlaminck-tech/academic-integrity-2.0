@@ -159,7 +159,6 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
     room: "STUDY",
     eyebrow: "Module 3",
     hintKey: "study",
-    wip: true,
     intro: [
       {
         kind: "prose",
