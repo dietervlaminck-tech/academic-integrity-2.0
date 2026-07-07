@@ -712,19 +712,21 @@ a {
   color: var(--ny-dark);
   margin: 0.1rem 0 0.6rem;
 }
-/* Answered options are aria-disabled (not disabled) to keep focus; show it visually. */
-.qcheck .tp__choice[aria-disabled="true"] {
+/* Answered options are aria-disabled (not native disabled) to keep keyboard focus.
+   These rules apply wherever that pattern is used (QuestionCheck, SourceChecker): show a
+   non-interactive cursor and preserve the correct/wrong colour on hover. */
+.tp__choice[aria-disabled="true"] {
   cursor: default;
 }
-.qcheck .tp__choice[aria-disabled="true"]:hover {
+.tp__choice[aria-disabled="true"]:hover {
   border-color: var(--ny-border);
   background: var(--ny-white);
 }
-.qcheck .tp__choice--correct[aria-disabled="true"]:hover {
+.tp__choice--correct[aria-disabled="true"]:hover {
   border-color: var(--ny-good);
   background: #eaf4ee;
 }
-.qcheck .tp__choice--wrong[aria-disabled="true"]:hover {
+.tp__choice--wrong[aria-disabled="true"]:hover {
   border-color: var(--ny-bad);
   background: #f7ecec;
 }
@@ -866,6 +868,14 @@ a {
 }
 .certificate .tp__actions {
   justify-content: center;
+}
+
+/* Corporate blue small text drops below AA on tinted surfaces; use dark blue there.
+   Covers the certificate code box (light-bg) and any eyebrow inside a note (tint). */
+.note .room__eyebrow,
+.certificate__code .room__eyebrow,
+.certificate__code .video__caption {
+  color: var(--ny-dark);
 }
 
 /* ---------- Print (certificate) ---------- */
