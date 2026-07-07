@@ -82,17 +82,20 @@ export function RoomScreen({ room }: { room: Room }) {
       {room === "WORKSHOP" && <AlignmentBuilder />}
 
       {room === "DOOR" && (
-        <div>
+        <div className="charter">
           <label htmlFor="charter" className="room__eyebrow">
-            {t.rooms.DOOR}
+            {t.charter.heading}
           </label>
+          <p className="charter__prompt">{t.charter.prompt}</p>
           <textarea
             id="charter"
-            className="gate__input"
-            style={{ letterSpacing: "normal", textTransform: "none", width: "100%", minHeight: "4rem" }}
+            className="charter__input"
+            rows={3}
             value={state.charter}
+            placeholder={t.charter.placeholder}
             onChange={(e) => setCharter(e.target.value)}
           />
+          <p className="video__caption">{t.charter.example}</p>
         </div>
       )}
 

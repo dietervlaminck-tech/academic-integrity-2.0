@@ -145,6 +145,12 @@ export const nl: Dict = {
     banner:
       "Deze kamer is nog in aanbouw. De verhaallijn en de code werken, maar de volledige puzzel komt in een latere build.",
   },
+  charter: {
+    heading: "Jouw AI-integriteitsbelofte",
+    prompt: "Schrijf een zin: hoe ga je AI dit jaar gebruiken, erover rapporteren en verifiëren in je eigen onderwijs of onderzoek? Ze wordt op dit apparaat bewaard en op je certificaat getoond.",
+    placeholder: "Dit jaar ga ik…",
+    example: "Voorbeeld: Dieter Vlaminck: ik vraag bij elke AI-ondersteunde inzending een verificatienotitie, en ik doe dat ook in mijn eigen papers.",
+  },
   certificate: {
     eyebrow: "Certificaat van deelname",
     title: "Je bent ontsnapt uit het kasteel",

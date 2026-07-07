@@ -144,6 +144,12 @@ export const en = {
     banner:
       "This room is still under construction. Its narrative and gate work, but the full puzzle arrives in a later build.",
   },
+  charter: {
+    heading: "Your AI-integrity charter",
+    prompt: "Write one sentence: how will you use, disclose and verify AI in your own teaching or research this year? It is stored on this device and shown on your certificate.",
+    placeholder: "This year I will…",
+    example: "Example: Dieter Vlaminck: I will require every AI-assisted submission to include a verification note, and I will do the same in my own papers.",
+  },
   certificate: {
     eyebrow: "Certificate of participation",
     title: "You escaped the castle",
