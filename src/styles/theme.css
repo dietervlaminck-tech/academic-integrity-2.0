@@ -427,6 +427,7 @@ a {
   overflow-wrap: anywhere;
 }
 .tp__bar-track {
+  display: block;
   background: var(--ny-light-bg);
   border: 1px solid var(--ny-border);
   border-radius: 999px;
@@ -434,7 +435,9 @@ a {
   overflow: hidden;
 }
 .tp__bar-fill {
+  display: block;
   height: 100%;
+  min-width: 2px;
   background: var(--ny-corporate);
   border-radius: 999px;
 }

@@ -40,6 +40,13 @@ describe("App playthrough (Start -> Library -> Machine Room)", () => {
     // The TokenPredictor puzzle is loaded (its prompt is unique to the puzzle).
     expect(screen.getByText(en.tp.question)).toBeInTheDocument();
 
+    // Regression: the Machine Room gate must be a fresh, empty, enabled field and
+    // must not inherit the Library gate's "unlocked" state.
+    const machineGate = screen.getByLabelText(en.gate.ariaInput);
+    expect(machineGate).toHaveValue("");
+    expect(machineGate).toBeEnabled();
+    expect(screen.queryByText(en.gate.success)).not.toBeInTheDocument();
+
     // Simulate a reload: unmount and remount from persisted localStorage.
     view.unmount();
     renderApp();

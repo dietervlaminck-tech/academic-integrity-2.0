@@ -60,7 +60,9 @@ export function App() {
 
       <main className="app__main">
         {inRoom && <ProgressRail />}
-        <Screen room={state.current} />
+        {/* Key by room so navigating remounts the screen and no per-room UI state
+            (a gate's typed code, the puzzle's progress) leaks across rooms. */}
+        <Screen key={state.current} room={state.current} />
       </main>
 
       <footer className="app__footer">{t.app.footerPayoff}</footer>
