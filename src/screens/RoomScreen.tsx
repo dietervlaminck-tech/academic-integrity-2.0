@@ -5,6 +5,7 @@ import { RoomShell } from "../components/RoomShell";
 import { QuestionCheck } from "../components/QuestionCheck";
 import { TokenPredictor } from "../components/TokenPredictor";
 import { SourceChecker } from "../components/SourceChecker";
+import { AlignmentBuilder } from "../components/AlignmentBuilder";
 import { Crossword } from "../components/Crossword";
 import { ExternalEmbed } from "../components/ExternalEmbed";
 import { CodeGate } from "../components/CodeGate";
@@ -77,6 +78,8 @@ export function RoomScreen({ room }: { room: Room }) {
       )}
 
       {room === "STUDY" && <SourceChecker />}
+
+      {room === "WORKSHOP" && <AlignmentBuilder />}
 
       {room === "DOOR" && (
         <div>

@@ -613,6 +613,61 @@ a {
   font-weight: 600;
 }
 
+/* ---------- Alignment builder (Room 4) ---------- */
+.al {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ny-border);
+}
+.al__chain {
+  border: 1px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--ny-white);
+}
+.al__outcome p {
+  font-weight: 600;
+  color: var(--ny-dark);
+  margin: 0.2rem 0 0.9rem;
+}
+.al__slots {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 560px) {
+  .al__slots {
+    grid-template-columns: 1fr;
+  }
+}
+.al__select {
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 0.5rem 0.6rem;
+  border: 2px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  background: var(--ny-white);
+  color: var(--ny-text);
+  width: 100%;
+  margin-top: 0.25rem;
+}
+.al__select:focus {
+  border-color: var(--ny-dark);
+}
+.al__card {
+  margin: 0.3rem 0 0;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--ny-border);
+  border-radius: 6px;
+  background: var(--ny-light-bg);
+  font-size: 0.92rem;
+}
+.al__card--aligned {
+  border-color: var(--ny-good);
+  background: #eaf4ee;
+}
+
 /* ---------- Source checker (Room 3) ---------- */
 .src {
   margin-top: 1.5rem;
