@@ -27,7 +27,8 @@ describe("TokenPredictor", () => {
 
     await pick(user, candidateName(0, correctIndex(tokenRounds[0]!)));
 
-    expect(screen.getByText(en.tp.correct)).toBeInTheDocument();
+    // "Correct" appears both visibly and in the persistent sr-only live region.
+    expect(screen.getAllByText(en.tp.correct).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(en.tp.probabilityHeading)).toBeInTheDocument();
     // The round's own explanation copy is shown.
     expect(screen.getByText(/With almost no context/)).toBeInTheDocument();
@@ -60,7 +61,7 @@ describe("TokenPredictor", () => {
       await advance(user, i === tokenRounds.length - 1);
     }
 
-    expect(screen.getByText(en.tp.resultPassTitle)).toBeInTheDocument();
+    expect(screen.getAllByText(en.tp.resultPassTitle).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("TOKEN")).toBeInTheDocument();
     expect(onSolved).toHaveBeenCalledWith("TOKEN");
   });
@@ -79,7 +80,7 @@ describe("TokenPredictor", () => {
       await advance(user, i === tokenRounds.length - 1);
     }
 
-    expect(screen.getByText(en.tp.resultFailTitle)).toBeInTheDocument();
+    expect(screen.getAllByText(en.tp.resultFailTitle).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("button", { name: en.tp.retry })).toBeInTheDocument();
     expect(screen.queryByText("TOKEN")).not.toBeInTheDocument();
     expect(onSolved).not.toHaveBeenCalled();

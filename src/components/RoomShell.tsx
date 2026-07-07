@@ -10,9 +10,13 @@ import { RoomIllustration } from "./RoomIllustration";
 
 export function RoomShell({
   content,
+  cleared = false,
   children,
 }: {
   content: RoomContent;
+  /** When the room is already cleared, hide the under-construction banner so the cleared
+      screen keeps a single golden accent (the Continue button). */
+  cleared?: boolean;
   children?: ReactNode;
 }) {
   const { t } = useI18n();
@@ -26,7 +30,7 @@ export function RoomShell({
 
       <RoomIllustration room={content.room} />
 
-      {content.wip && <p className="wip">{t.wip.banner}</p>}
+      {content.wip && !cleared && <p className="wip">{t.wip.banner}</p>}
 
       <NarrativeSections sections={content.intro} />
 

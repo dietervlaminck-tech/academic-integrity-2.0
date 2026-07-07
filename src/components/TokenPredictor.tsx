@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { fmt, useI18n } from "../i18n";
 import {
   RHYME_ROUND_ID,
@@ -79,6 +79,14 @@ export function TokenPredictor({ onSolved }: TokenPredictorProps) {
   const [finished, setFinished] = useState(false);
   const solvedFired = useRef(false);
 
+  // Focus management: a picked choice becomes disabled, so without this the browser drops
+  // focus to <body>. We move focus to the reveal action (then the result, then the next
+  // round's first choice) so a keyboard user never loses their place.
+  const actionRef = useRef<HTMLButtonElement>(null);
+  const firstChoiceRef = useRef<HTMLButtonElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const mounted = useRef(false);
+
   const round = rounds[index];
   const isLast = index === rounds.length - 1;
 
@@ -91,11 +99,24 @@ export function TokenPredictor({ onSolved }: TokenPredictorProps) {
     return n;
   }, [answers, rounds]);
 
+  useEffect(() => {
+    // Do not steal focus on the initial mount, only after a user action.
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    if (finished) resultRef.current?.focus();
+    else if (revealed) actionRef.current?.focus();
+    else firstChoiceRef.current?.focus();
+  }, [revealed, index, finished]);
+
   if (!round) return null;
 
   const pickedIndex = answers[round.id];
   const answeredCorrectly =
     pickedIndex !== undefined && isCorrectPick(round, pickedIndex);
+  const isRhyme = round.id === RHYME_ROUND_ID;
+  const correctIdx = correctIndex(round);
 
   function handlePick(choice: number) {
     if (revealed) return;
@@ -125,95 +146,115 @@ export function TokenPredictor({ onSolved }: TokenPredictorProps) {
     solvedFired.current = false;
   }
 
-  if (finished) {
-    const result = evaluateGame(answers, rounds);
-    return (
-      <div className="tp__result" role="status">
-        <h3>{result.passed ? t.tp.resultPassTitle : t.tp.resultFailTitle}</h3>
-        <p className="tp__result-score">
-          {fmt(t.tp.resultScore, { correct: result.correct, total: result.total })}
-        </p>
-        {result.passed ? (
-          <>
-            <p>{t.tp.resultPass}</p>
-            <p className="tp__stem">
-              {t.tp.gateReveal} <strong>{result.code}</strong>
-            </p>
-          </>
-        ) : (
-          <>
-            <p>
-              {fmt(t.tp.resultFail, {
-                threshold: TOKEN_PASS_THRESHOLD,
-                total: result.total,
-              })}
-            </p>
-            <button type="button" className="btn btn--primary" onClick={handleRetry}>
-              {t.tp.retry}
-            </button>
-          </>
-        )}
-      </div>
-    );
-  }
+  const result = finished ? evaluateGame(answers, rounds) : null;
 
-  const isRhyme = round.id === RHYME_ROUND_ID;
-  const correctIdx = correctIndex(round);
+  // One always-present live region: a live region must exist before its text changes for
+  // assistive tech to announce it, so the correct/incorrect feedback and the final result
+  // are written into this persistent node rather than freshly mounted regions.
+  let liveMessage = "";
+  if (result) {
+    liveMessage = `${
+      result.passed ? t.tp.resultPassTitle : t.tp.resultFailTitle
+    }. ${fmt(t.tp.resultScore, { correct: result.correct, total: result.total })}`;
+  } else if (revealed) {
+    liveMessage = answeredCorrectly ? t.tp.correct : t.tp.incorrect;
+  }
 
   return (
     <div className="tp">
-      <div className="tp__progress">
-        <span>{fmt(t.tp.progress, { n: index + 1, total: rounds.length })}</span>
-        <span>{fmt(t.tp.scoreSoFar, { correct: correctSoFar })}</span>
-      </div>
+      <p className="sr-only" role="status" aria-live="polite">
+        {liveMessage}
+      </p>
 
-      <p className="tp__stem">{round.stem}</p>
-      <p className="tp__question">{revealed ? t.tp.picked : t.tp.question}</p>
-
-      <div className="tp__choices" role="group" aria-label={t.tp.question}>
-        {round.candidates.map((cand, i) => {
-          let cls = "tp__choice";
-          if (revealed) {
-            if (i === correctIdx) cls += " tp__choice--correct";
-            else if (i === pickedIndex) cls += " tp__choice--wrong";
-          } else if (i === pickedIndex) {
-            cls += " tp__choice--picked";
-          }
-          return (
-            <button
-              key={cand.text}
-              type="button"
-              className={cls}
-              disabled={revealed}
-              aria-pressed={i === pickedIndex}
-              onClick={() => handlePick(i)}
-            >
-              <span>{cand.text}</span>
-              {revealed && <span className="tp__bar-pct">{cand.probability}%</span>}
-            </button>
-          );
-        })}
-      </div>
-
-      {revealed && (
-        <>
-          <p
-            className={
-              answeredCorrectly ? "gate__msg gate__msg--ok" : "gate__msg gate__msg--error"
-            }
-            role="status"
-            aria-live="polite"
-          >
-            {answeredCorrectly ? t.tp.correct : t.tp.incorrect}
+      {result ? (
+        <div className="tp__result" ref={resultRef} tabIndex={-1}>
+          <h3>{result.passed ? t.tp.resultPassTitle : t.tp.resultFailTitle}</h3>
+          <p className="tp__result-score">
+            {fmt(t.tp.resultScore, { correct: result.correct, total: result.total })}
           </p>
-          <ProbabilityBars round={round} />
-          {isRhyme && <ModelVoices round={round} />}
-          <div className="tp__explanation">{round.explanation}</div>
-          <div className="tp__actions">
-            <button type="button" className="btn btn--accent" onClick={handleNext}>
-              {isLast ? t.tp.seeResult : t.tp.nextRound}
-            </button>
+          {result.passed ? (
+            <>
+              <p>{t.tp.resultPass}</p>
+              <p className="tp__stem">
+                {t.tp.gateReveal} <strong>{result.code}</strong>
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                {fmt(t.tp.resultFail, {
+                  threshold: TOKEN_PASS_THRESHOLD,
+                  total: result.total,
+                })}
+              </p>
+              <button type="button" className="btn btn--primary" onClick={handleRetry}>
+                {t.tp.retry}
+              </button>
+            </>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="tp__progress">
+            <span>{fmt(t.tp.progress, { n: index + 1, total: rounds.length })}</span>
+            <span>{fmt(t.tp.scoreSoFar, { correct: correctSoFar })}</span>
           </div>
+
+          <p className="tp__stem">{round.stem}</p>
+          <p className="tp__question">{revealed ? t.tp.picked : t.tp.question}</p>
+
+          <div className="tp__choices" role="group" aria-label={t.tp.question}>
+            {round.candidates.map((cand, i) => {
+              let cls = "tp__choice";
+              if (revealed) {
+                if (i === correctIdx) cls += " tp__choice--correct";
+                else if (i === pickedIndex) cls += " tp__choice--wrong";
+              } else if (i === pickedIndex) {
+                cls += " tp__choice--picked";
+              }
+              return (
+                <button
+                  key={cand.text}
+                  ref={i === 0 ? firstChoiceRef : undefined}
+                  type="button"
+                  className={cls}
+                  disabled={revealed}
+                  aria-pressed={i === pickedIndex}
+                  onClick={() => handlePick(i)}
+                >
+                  <span>{cand.text}</span>
+                  {revealed && <span className="tp__bar-pct">{cand.probability}%</span>}
+                </button>
+              );
+            })}
+          </div>
+
+          {revealed && (
+            <>
+              <p
+                className={
+                  answeredCorrectly
+                    ? "gate__msg gate__msg--ok"
+                    : "gate__msg gate__msg--error"
+                }
+              >
+                {answeredCorrectly ? t.tp.correct : t.tp.incorrect}
+              </p>
+              <ProbabilityBars round={round} />
+              {isRhyme && <ModelVoices round={round} />}
+              <div className="tp__explanation">{round.explanation}</div>
+              <div className="tp__actions">
+                <button
+                  ref={actionRef}
+                  type="button"
+                  className="btn btn--accent"
+                  onClick={handleNext}
+                >
+                  {isLast ? t.tp.seeResult : t.tp.nextRound}
+                </button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

@@ -86,6 +86,15 @@ export const en = {
     retry: "Try again",
     gateReveal: "The plate reads:",
   },
+  check: {
+    heading: "Video check",
+    intro: "Two quick questions on the reasoning-LLMs video.",
+    question: "Question {n} of {total}",
+    correct: "Correct.",
+    incorrect: "Not quite. The correct answer is highlighted.",
+    summary: "{correct} of {total} correct.",
+    allCorrect: "Both correct. You have the idea; now try the machine's job below.",
+  },
   wip: {
     banner:
       "This room is still under construction. Its narrative and gate work, but the full puzzle arrives in a later build.",

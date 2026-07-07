@@ -87,6 +87,15 @@ export const nl: Dict = {
     retry: "Opnieuw proberen",
     gateReveal: "Op het plaatje staat:",
   },
+  check: {
+    heading: "Videocheck",
+    intro: "Twee korte vragen over de video over redeneer-LLM's.",
+    question: "Vraag {n} van {total}",
+    correct: "Correct.",
+    incorrect: "Net niet. Het juiste antwoord is gemarkeerd.",
+    summary: "{correct} van {total} goed.",
+    allCorrect: "Beide goed. Je snapt het; probeer nu hieronder het werk van de machine.",
+  },
   wip: {
     banner:
       "Deze kamer is nog in aanbouw. De verhaallijn en de code werken, maar de volledige puzzel komt in een latere build.",

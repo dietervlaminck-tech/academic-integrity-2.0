@@ -247,3 +247,34 @@ export function roomContent(room: Room): RoomContent | null {
   if (room === "START" || room === "ESCAPED") return null;
   return rooms[room];
 }
+
+// ---------- Room 2: two-question check tied to the reasoning-LLMs video ----------
+// Questions and options are transcribed verbatim from the "The control panel" quiz in
+// Canvas_ready_content.md (Module 2, Q1 and Q4). Option order is varied so the correct
+// answer is not in a fixed position; no wording is changed.
+
+export type CheckOption = { text: string; correct: boolean };
+export type CheckQuestion = { id: string; prompt: string; options: CheckOption[] };
+
+export const machineRoomCheck: CheckQuestion[] = [
+  {
+    id: "q-what-llm-does",
+    prompt: "What does a large language model fundamentally do?",
+    options: [
+      { text: "Look up answers in a database", correct: false },
+      { text: "Predict the most probable next token given a context", correct: true },
+      { text: "Copy sentences from the internet", correct: false },
+      { text: "Reason logically about facts", correct: false },
+    ],
+  },
+  {
+    id: "q-reasoning-model",
+    prompt: "What distinguishes a reasoning model from a classic LLM?",
+    options: [
+      { text: "It is always correct", correct: false },
+      { text: "It refuses jokes", correct: false },
+      { text: "It generates intermediate reasoning steps before answering", correct: true },
+      { text: "It has feelings", correct: false },
+    ],
+  },
+];

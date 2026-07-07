@@ -519,6 +519,37 @@ a {
   border: 0;
 }
 
+/* ---------- Question check (Room 2 video check) ---------- */
+.qcheck {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ny-border);
+}
+.qcheck__q {
+  margin-bottom: 1.25rem;
+}
+.qcheck__prompt {
+  font-weight: 600;
+  color: var(--ny-dark);
+  margin: 0.1rem 0 0.6rem;
+}
+/* Answered options are aria-disabled (not disabled) to keep focus; show it visually. */
+.qcheck .tp__choice[aria-disabled="true"] {
+  cursor: default;
+}
+.qcheck .tp__choice[aria-disabled="true"]:hover {
+  border-color: var(--ny-border);
+  background: var(--ny-white);
+}
+.qcheck .tp__choice--correct[aria-disabled="true"]:hover {
+  border-color: var(--ny-good);
+  background: #eaf4ee;
+}
+.qcheck .tp__choice--wrong[aria-disabled="true"]:hover {
+  border-color: var(--ny-bad);
+  background: #f7ecec;
+}
+
 /* ---------- Progress rail ---------- */
 .rail {
   display: flex;

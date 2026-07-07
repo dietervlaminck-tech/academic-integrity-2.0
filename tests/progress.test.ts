@@ -149,7 +149,7 @@ describe("navigateTo", () => {
 });
 
 describe("resetRoom / resetAll", () => {
-  it("rewinds a room and everything after it", () => {
+  it("rewinds a room and everything after it, clamping current to the reset room", () => {
     const s = playThrough();
     const r = resetRoom(s, "STUDY");
     expect(r.furthest).toBe("STUDY");
@@ -157,8 +157,19 @@ describe("resetRoom / resetAll", () => {
     expect(isCleared(r, "STUDY")).toBe(false);
     expect(isCleared(r, "WORKSHOP")).toBe(false);
     expect(isCleared(r, "DOOR")).toBe(false);
-    // current is clamped back into the unlocked range.
-    expect(roomIndex(r.current)).toBeLessThanOrEqual(roomIndex(r.furthest));
+    // current was ahead of the reset room (ESCAPED), so it is pulled back to exactly STUDY.
+    expect(r.current).toBe("STUDY");
+  });
+
+  it("leaves current and furthest untouched when resetting a room ahead of the player", () => {
+    // Player is mid-game at the Machine Room; resetting a later room must not move them
+    // forward nor rewind their unlocked frontier below where they already are.
+    let s = startCourse(initialState(), "Dieter", NOW);
+    s = submitGate(s, "LIBRARY", "APA", NOW).state; // furthest=MACHINE_ROOM, current=MACHINE_ROOM
+    const r = resetRoom(s, "WORKSHOP");
+    expect(r.current).toBe("MACHINE_ROOM");
+    expect(r.furthest).toBe("MACHINE_ROOM");
+    expect(isCleared(r, "LIBRARY")).toBe(true);
   });
 
   it("resetAll returns a fresh state", () => {

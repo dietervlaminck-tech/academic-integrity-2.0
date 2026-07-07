@@ -1,7 +1,8 @@
 import { useI18n } from "../i18n";
-import { roomContent } from "../content/rooms";
+import { machineRoomCheck, roomContent } from "../content/rooms";
 import { hints as puzzleHints } from "../content/puzzles";
 import { RoomShell } from "../components/RoomShell";
+import { QuestionCheck } from "../components/QuestionCheck";
 import { TokenPredictor } from "../components/TokenPredictor";
 import { CodeGate } from "../components/CodeGate";
 import { HintButton } from "../components/HintButton";
@@ -20,7 +21,7 @@ export function RoomScreen({ room }: { room: Room }) {
 
   if (cleared) {
     return (
-      <RoomShell content={content}>
+      <RoomShell content={content} cleared>
         <div className="note">
           <p>{content.gateRevealText}</p>
         </div>
@@ -50,7 +51,12 @@ export function RoomScreen({ room }: { room: Room }) {
 
   return (
     <RoomShell content={content}>
-      {room === "MACHINE_ROOM" && <TokenPredictor />}
+      {room === "MACHINE_ROOM" && (
+        <>
+          <QuestionCheck questions={machineRoomCheck} />
+          <TokenPredictor />
+        </>
+      )}
 
       {room === "DOOR" && (
         <div>
