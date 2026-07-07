@@ -4,6 +4,8 @@ import { hints as puzzleHints } from "../content/puzzles";
 import { RoomShell } from "../components/RoomShell";
 import { QuestionCheck } from "../components/QuestionCheck";
 import { TokenPredictor } from "../components/TokenPredictor";
+import { Crossword } from "../components/Crossword";
+import { ExternalEmbed } from "../components/ExternalEmbed";
 import { CodeGate } from "../components/CodeGate";
 import { HintButton } from "../components/HintButton";
 import { isCleared, nextRoom, type Room } from "../state/progress";
@@ -51,6 +53,21 @@ export function RoomScreen({ room }: { room: Room }) {
 
   return (
     <RoomShell content={content}>
+      {room === "LIBRARY" && (
+        <>
+          {content.activityEmbed && (
+            <>
+              <ExternalEmbed
+                src={content.activityEmbed.src}
+                title={content.activityEmbed.title}
+              />
+              <p className="tp__question">{t.crossword.orSolveHere}</p>
+            </>
+          )}
+          <Crossword />
+        </>
+      )}
+
       {room === "MACHINE_ROOM" && (
         <>
           <QuestionCheck questions={machineRoomCheck} />

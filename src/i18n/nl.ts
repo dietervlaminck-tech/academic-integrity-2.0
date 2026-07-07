@@ -87,6 +87,21 @@ export const nl: Dict = {
     retry: "Opnieuw proberen",
     gateReveal: "Op het plaatje staat:",
   },
+  embed: {
+    fallback: "Laadt de activiteit hier niet? Open haar in een nieuw tabblad:",
+    openNewTab: "Openen in een nieuw tabblad",
+  },
+  crossword: {
+    heading: "Het kruiswoordraadsel",
+    intro: "Los de aanwijzingen op. Het antwoord op aanwijzing 4 opent de onderste deuren van de boekenkast.",
+    across: "Horizontaal",
+    down: "Verticaal",
+    answerLabel: "Antwoord voor {num} {dir}, {len} letters",
+    solved: "Opgelost",
+    progress: "{solved} van {total} aanwijzingen opgelost",
+    gateCallout: "Aanwijzing 4 is de code voor de deuren: {code}",
+    orSolveHere: "Los je het liever hier op? Gebruik de ingebouwde versie hieronder.",
+  },
   check: {
     heading: "Videocheck",
     intro: "Twee korte vragen over de video over redeneer-LLM's.",

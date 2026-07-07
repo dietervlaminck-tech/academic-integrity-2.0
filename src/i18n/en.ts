@@ -86,6 +86,21 @@ export const en = {
     retry: "Try again",
     gateReveal: "The plate reads:",
   },
+  embed: {
+    fallback: "If the activity does not load here, open it in a new tab:",
+    openNewTab: "Open in a new tab",
+  },
+  crossword: {
+    heading: "The crossword",
+    intro: "Solve the clues. The answer to clue 4 opens the bottom doors of the bookcase.",
+    across: "Across",
+    down: "Down",
+    answerLabel: "Answer for {num} {dir}, {len} letters",
+    solved: "Solved",
+    progress: "{solved} of {total} clues solved",
+    gateCallout: "Clue 4 is the code for the doors: {code}",
+    orSolveHere: "Prefer to solve it here? Use the native version below.",
+  },
   check: {
     heading: "Video check",
     intro: "Two quick questions on the reasoning-LLMs video.",
