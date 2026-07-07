@@ -30,6 +30,8 @@ export type RoomContent = {
   intro: Section[];
   /** Optional external activity/policy links. */
   links?: ExternalLink[];
+  /** Optional existing external activity embedded in an iframe (with a fallback link). */
+  activityEmbed?: { src: string; title: string };
   /** Narrative revealed after the gate opens (may name the next key). */
   gateRevealText: string;
   /** True for rooms whose full puzzle is not built yet (placeholder banner). */
@@ -70,7 +72,6 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
     room: "LIBRARY",
     eyebrow: "Module 1",
     hintKey: "library",
-    wip: true,
     intro: [
       {
         kind: "prose",
@@ -88,12 +89,11 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
         ],
       },
     ],
+    activityEmbed: {
+      src: "https://interacty.me/projects/49e9a71ad40ac0f7",
+      title: "Integrity crossword (Interacty)",
+    },
     links: [
-      {
-        label: "Integrity crossword (Interacty)",
-        url: "https://interacty.me/projects/49e9a71ad40ac0f7",
-        note: "The answer to clue 4 is the gate code.",
-      },
       {
         label: "Terms and regulations overview",
         url: "https://www.nyenrode.nl/en/about-us/about-nyenrode/terms-and-conditions",
