@@ -31,6 +31,28 @@ jobs:
         with:
           path: dist
 
+  # Lighthouse quality gate: accessibility >= 90, performance >= 85 (acceptance
+  # criterion 4). Runs on the built bundle served at the root base. Reports a check
+  # but does not gate the deploy (deploy needs only `ci`), so a flaky perf run cannot
+  # block shipping a working build.
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build (root base for local serving)
+        run: npm run build
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
   # Deploy the built bundle to GitHub Pages, only on push to main.
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'

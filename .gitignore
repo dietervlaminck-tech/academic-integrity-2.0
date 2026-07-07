@@ -8,6 +8,9 @@ dist-ssr/
 # vitest / coverage
 coverage/
 
+# lighthouse ci
+.lighthouseci/
+
 # logs
 *.log
 npm-debug.log*
