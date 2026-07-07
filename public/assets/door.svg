@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="A heavy castle door">
+  <rect width="240" height="160" fill="#F0F2F5"/>
+  <path d="M84 144 V52 a36 36 0 0 1 72 0 v92 z" fill="#355071"/>
+  <path d="M92 140 V52 a28 28 0 0 1 56 0 v88 z" fill="#5D7291"/>
+  <line x1="120" y1="26" x2="120" y2="140" stroke="#355071" stroke-width="3"/>
+  <rect x="100" y="70" width="16" height="26" rx="2" fill="#2c435f"/>
+  <rect x="124" y="70" width="16" height="26" rx="2" fill="#2c435f"/>
+  <circle cx="112" cy="108" r="3.5" fill="#F0F2F5"/>
+  <circle cx="128" cy="108" r="3.5" fill="#F0F2F5"/>
+  <rect x="72" y="140" width="96" height="6" fill="#355071"/>
+</svg>

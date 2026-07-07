@@ -1,0 +1,590 @@
+/* Nyenrode huisstijl: palette + chrome for The Ghostwriter of Nyenrode Castle.
+   Accessibility notes:
+   - --ny-accent (#FBBA20) fails WCAG AA as text on white, so it is used only as a
+     background fill (with dark text on it) or as decoration, never as small text on white.
+   - Headings are ALL CAPS with letter-spacing per the huisstijl. */
+
+:root {
+  --ny-corporate: #5d7291;
+  --ny-dark: #355071;
+  --ny-accent: #fbba20;
+  --ny-light-bg: #f0f2f5;
+  --ny-white: #ffffff;
+  --ny-text: #1a1a1a;
+
+  /* derived */
+  --ny-dark-90: #2c435f;
+  --ny-corporate-tint: #e7ebf1;
+  --ny-border: #cdd4de;
+  --ny-good: #2f7d4f;
+  --ny-bad: #b23b3b;
+
+  --ny-font: "Segoe UI", "Calibri", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
+  --ny-radius: 8px;
+  --ny-maxw: 760px;
+  --ny-shadow: 0 2px 10px rgba(53, 80, 113, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--ny-font);
+  color: var(--ny-text);
+  background: var(--ny-light-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ny-font);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ny-dark);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+}
+h2 {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+h3 {
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--ny-dark);
+}
+
+/* ---------- App frame ---------- */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__main {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: var(--ny-maxw);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.app__topbar {
+  background: var(--ny-dark);
+  color: var(--ny-white);
+  padding: 0.6rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app__brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+}
+
+.app__topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Bottom bar payoff */
+.app__footer {
+  flex: 0 0 auto;
+  background: var(--ny-dark);
+  color: var(--ny-white);
+  text-align: center;
+  padding: 0.9rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--ny-radius);
+  border: 2px solid transparent;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--ny-dark);
+  color: var(--ny-white);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--ny-dark-90);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--ny-dark);
+  border-color: var(--ny-corporate);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--ny-corporate-tint);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ny-white);
+  border-color: rgba(255, 255, 255, 0.5);
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+}
+.btn--ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* The single golden accent element per screen: gold fill, dark text (AA-safe). */
+.btn--accent {
+  background: var(--ny-accent);
+  color: var(--ny-text);
+  border-color: var(--ny-accent);
+}
+.btn--accent:hover:not(:disabled) {
+  background: #e8a911;
+  border-color: #e8a911;
+}
+
+/* Keyboard focus: always visible, high contrast. */
+:focus-visible {
+  outline: 3px solid var(--ny-dark);
+  outline-offset: 2px;
+}
+.app__topbar :focus-visible,
+.app__footer :focus-visible {
+  outline-color: var(--ny-accent);
+}
+
+/* ---------- Cards / room shell ---------- */
+.card {
+  background: var(--ny-white);
+  border: 1px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  box-shadow: var(--ny-shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.room__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ny-corporate);
+  margin-bottom: 0.4rem;
+}
+
+/* Decorative rule under the room title. Kept corporate-blue so the single golden accent
+   per screen is reserved for the primary call-to-action. */
+.room__title-rule {
+  width: 56px;
+  height: 4px;
+  background: var(--ny-corporate);
+  border-radius: 2px;
+  margin: 0.2rem 0 1.1rem;
+}
+
+.room__illustration {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--ny-radius);
+  border: 1px solid var(--ny-border);
+  margin: 0 0 1.25rem;
+  background: var(--ny-light-bg);
+}
+
+.narrative {
+  white-space: pre-line;
+}
+.narrative p {
+  margin: 0 0 0.9em;
+}
+
+.note {
+  background: var(--ny-corporate-tint);
+  border-left: 4px solid var(--ny-corporate);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* ---------- Video embed ---------- */
+.video {
+  margin: 1rem 0;
+}
+.video__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--ny-radius);
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--ny-border);
+}
+.video__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video__caption {
+  font-size: 0.82rem;
+  color: var(--ny-corporate);
+  margin-top: 0.4rem;
+}
+
+/* ---------- Code gate ---------- */
+.gate {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.gate__row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.gate__input {
+  font-family: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  flex: 1 1 12rem;
+  min-width: 0;
+  color: var(--ny-text);
+  background: var(--ny-white);
+}
+.gate__input:focus {
+  border-color: var(--ny-dark);
+}
+.gate__input--error {
+  border-color: var(--ny-bad);
+}
+.gate__msg {
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+.gate__msg--error {
+  color: var(--ny-bad);
+}
+.gate__msg--ok {
+  color: var(--ny-good);
+  font-weight: 600;
+}
+
+/* ---------- Hint ---------- */
+.hint {
+  margin-top: 1rem;
+}
+.hint__list {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.hint__item {
+  background: var(--ny-light-bg);
+  border: 1px solid var(--ny-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.92rem;
+}
+.hint__item--answer {
+  border-color: var(--ny-corporate);
+  font-weight: 600;
+}
+
+/* ---------- Token predictor ---------- */
+.tp__progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.85rem;
+  color: var(--ny-corporate);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+}
+
+.tp__stem {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ny-dark);
+  background: var(--ny-light-bg);
+  border-radius: var(--ny-radius);
+  padding: 0.9rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.tp__question {
+  font-size: 0.9rem;
+  color: var(--ny-corporate);
+  margin-bottom: 0.75rem;
+}
+
+.tp__choices {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.tp__choice {
+  text-align: left;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 0.9rem;
+  border: 2px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  background: var(--ny-white);
+  color: var(--ny-text);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+.tp__choice:hover:not(:disabled) {
+  border-color: var(--ny-corporate);
+  background: var(--ny-corporate-tint);
+}
+.tp__choice--picked {
+  border-color: var(--ny-dark);
+}
+.tp__choice--correct {
+  border-color: var(--ny-good);
+  background: #eaf4ee;
+}
+.tp__choice--wrong {
+  border-color: var(--ny-bad);
+  background: #f7ecec;
+}
+.tp__choice:disabled {
+  cursor: default;
+}
+
+.tp__bars {
+  margin: 1.1rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tp__bar-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 40%) 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.tp__bar-label {
+  overflow-wrap: anywhere;
+}
+.tp__bar-track {
+  background: var(--ny-light-bg);
+  border: 1px solid var(--ny-border);
+  border-radius: 999px;
+  height: 14px;
+  overflow: hidden;
+}
+.tp__bar-fill {
+  height: 100%;
+  background: var(--ny-corporate);
+  border-radius: 999px;
+}
+.tp__bar-fill--top {
+  background: var(--ny-dark);
+}
+.tp__bar-pct {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  min-width: 3ch;
+  text-align: right;
+}
+
+.tp__explanation {
+  margin-top: 1rem;
+  background: var(--ny-corporate-tint);
+  border-radius: var(--ny-radius);
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+}
+
+/* The two "model voices" side by side for the rhyme-trap round. */
+.tp__voices {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+}
+@media (max-width: 560px) {
+  .tp__voices {
+    grid-template-columns: 1fr;
+  }
+}
+.tp__voice {
+  border: 1px solid var(--ny-border);
+  border-radius: var(--ny-radius);
+  padding: 0.8rem 0.9rem;
+  background: var(--ny-white);
+}
+.tp__voice h4 {
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: var(--ny-corporate);
+}
+.tp__voice p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.tp__actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.tp__result {
+  text-align: center;
+  padding: 1rem 0;
+}
+.tp__result-score {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ny-dark);
+}
+
+/* screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Progress rail ---------- */
+.rail {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  list-style: none;
+  padding: 0;
+}
+.rail__item {
+  font-family: inherit;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--ny-border);
+  color: var(--ny-corporate);
+  background: var(--ny-white);
+  cursor: pointer;
+}
+.rail__item:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.rail__item--done {
+  background: var(--ny-corporate);
+  color: var(--ny-white);
+  border-color: var(--ny-corporate);
+}
+.rail__item--current {
+  border-color: var(--ny-dark);
+  color: var(--ny-dark);
+  font-weight: 700;
+}
+
+/* ---------- Placeholder room banner ---------- */
+.wip {
+  background: #fff8e6;
+  border: 1px dashed var(--ny-accent);
+  border-radius: var(--ny-radius);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* ---------- Print (certificate) ---------- */
+@media print {
+  body {
+    background: var(--ny-white);
+  }
+  .app__topbar,
+  .app__footer,
+  .rail,
+  .no-print {
+    display: none !important;
+  }
+  .app__main {
+    max-width: 100%;
+    padding: 0;
+  }
+  .card {
+    box-shadow: none;
+    border: 2px solid var(--ny-dark);
+  }
+}

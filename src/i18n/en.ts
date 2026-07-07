@@ -1,0 +1,108 @@
+// English UI dictionary (canonical shape). All user-facing chrome strings live here;
+// narrative and puzzle copy live in src/content. Placeholders use {name} tokens,
+// filled by the fmt() helper. No em-dashes anywhere in user-facing text.
+
+export const en = {
+  app: {
+    brand: "THE GHOSTWRITER OF NYENRODE CASTLE",
+    footerPayoff: "NYENRODE. A REWARD FOR LIFE",
+    tagline: "Academic Integrity 2.0",
+  },
+  lang: {
+    label: "Language",
+    en: "English",
+    nl: "Nederlands",
+  },
+  nav: {
+    next: "Next",
+    back: "Back",
+    continue: "Continue",
+  },
+  reset: {
+    room: "Reset this room",
+    all: "Reset all progress",
+    confirmAll: "Reset all progress and start over? This cannot be undone.",
+    confirmRoom: "Reset this room and everything after it?",
+  },
+  rooms: {
+    START: "Start",
+    LIBRARY: "The Library",
+    MACHINE_ROOM: "The Machine Room",
+    STUDY: "The Study",
+    WORKSHOP: "The Workshop",
+    DOOR: "The Door",
+    ESCAPED: "Escaped",
+  },
+  rail: {
+    label: "Your progress through the castle",
+  },
+  gate: {
+    heading: "Access code",
+    help: "Enter the code in CAPITALS.",
+    placeholder: "CODE",
+    submit: "Unlock",
+    error: "That code does not fit the lock. Look again, or ask for a hint.",
+    success: "The lock clicks open.",
+    locked: "Finish this room to unlock the code.",
+    ariaInput: "Access code, capital letters",
+  },
+  hint: {
+    button: "I'm stuck",
+    hide: "Hide hints",
+    title: "Hints",
+    reveal: "Show hint {n} of {total}",
+    answerBadge: "Answer",
+    intro: "Hints reveal one at a time. The final hint gives the answer.",
+  },
+  video: {
+    captionNote: "Captions and transcript are available on YouTube.",
+    openNewTab: "Open on YouTube",
+  },
+  start: {
+    namePrompt: "What name should the castle remember you by?",
+    namePlaceholder: "Your name",
+    nameHelp: "Used only on your local certificate. It never leaves this browser.",
+    begin: "Enter the room",
+  },
+  tp: {
+    progress: "Round {n} of {total}",
+    scoreSoFar: "{correct} correct so far",
+    question: "Which word is the machine most likely to predict next?",
+    hintPick: "Pick the most probable next token.",
+    picked: "You picked:",
+    correct: "Correct. That was the most probable token.",
+    incorrect: "Not the most probable one. See the distribution below.",
+    probabilityHeading: "The probability the machine assigns to each token",
+    voicePattern: "Pattern machine",
+    voiceReasoning: "Reasoning model",
+    voiceIntro: "Two machines, two answers:",
+    nextRound: "Next round",
+    seeResult: "See result",
+    resultPassTitle: "The maintenance hatch swings open",
+    resultFailTitle: "The machine sputters",
+    resultScore: "{correct} of {total} correct",
+    resultPass: "You predicted like the machine. Behind the control panel, a plate is etched with its fuel.",
+    resultFail: "You need at least {threshold} of {total} to read the plate. Reset the round and try again.",
+    retry: "Try again",
+    gateReveal: "The plate reads:",
+  },
+  wip: {
+    banner:
+      "This room is still under construction. Its narrative and gate work, but the full puzzle arrives in a later build.",
+  },
+  certificate: {
+    eyebrow: "Certificate of participation",
+    title: "You escaped the castle",
+    body: "This certifies that {name} understood the machine, saw through its words, and can design assessment it cannot fake.",
+    anonymous: "an anonymous scholar",
+    charterLabel: "My AI-integrity charter",
+    codeLabel: "Completion code",
+    codeHelp: "Paste this code into the Canvas wall-of-fame thread.",
+    disclaimer:
+      "Non-personalised certificate of participation. No personal data left your browser.",
+    print: "Print certificate",
+    replay: "Play again",
+  },
+};
+
+export type Dict = typeof en;

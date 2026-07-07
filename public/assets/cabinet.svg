@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="An examiner's chest of drawers">
+  <rect width="240" height="160" fill="#F0F2F5"/>
+  <rect x="66" y="26" width="108" height="118" rx="4" fill="#355071"/>
+  <rect x="74" y="34" width="92" height="22" fill="#5D7291"/>
+  <rect x="74" y="60" width="92" height="22" fill="#5D7291"/>
+  <rect x="74" y="86" width="92" height="22" fill="#5D7291"/>
+  <rect x="74" y="112" width="92" height="24" fill="#2c435f"/>
+  <circle cx="120" cy="45" r="3.5" fill="#F0F2F5"/>
+  <circle cx="120" cy="71" r="3.5" fill="#F0F2F5"/>
+  <circle cx="120" cy="97" r="3.5" fill="#F0F2F5"/>
+  <circle cx="120" cy="124" r="3.5" fill="#F0F2F5"/>
+  <rect x="60" y="140" width="120" height="6" fill="#2c435f"/>
+</svg>

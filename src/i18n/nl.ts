@@ -1,0 +1,107 @@
+// Dutch UI dictionary. Mirrors the English shape exactly (Dict). Narrative and the
+// pedagogical Dutch token examples live in src/content, not here. No em-dashes.
+
+import type { Dict } from "./en";
+
+export const nl: Dict = {
+  app: {
+    brand: "DE GHOSTWRITER VAN KASTEEL NYENRODE",
+    footerPayoff: "NYENRODE. A REWARD FOR LIFE",
+    tagline: "Academische Integriteit 2.0",
+  },
+  lang: {
+    label: "Taal",
+    en: "English",
+    nl: "Nederlands",
+  },
+  nav: {
+    next: "Verder",
+    back: "Terug",
+    continue: "Doorgaan",
+  },
+  reset: {
+    room: "Deze kamer resetten",
+    all: "Alle voortgang resetten",
+    confirmAll: "Alle voortgang resetten en opnieuw beginnen? Dit kan niet ongedaan worden gemaakt.",
+    confirmRoom: "Deze kamer en alles daarna resetten?",
+  },
+  rooms: {
+    START: "Start",
+    LIBRARY: "De Bibliotheek",
+    MACHINE_ROOM: "De Machinekamer",
+    STUDY: "De Studeerkamer",
+    WORKSHOP: "Het Atelier",
+    DOOR: "De Deur",
+    ESCAPED: "Ontsnapt",
+  },
+  rail: {
+    label: "Jouw voortgang door het kasteel",
+  },
+  gate: {
+    heading: "Toegangscode",
+    help: "Voer de code in HOOFDLETTERS in.",
+    placeholder: "CODE",
+    submit: "Ontgrendel",
+    error: "Die code past niet op het slot. Kijk nog eens, of vraag een hint.",
+    success: "Het slot klikt open.",
+    locked: "Rond deze kamer af om de code te ontgrendelen.",
+    ariaInput: "Toegangscode, hoofdletters",
+  },
+  hint: {
+    button: "Ik zit vast",
+    hide: "Hints verbergen",
+    title: "Hints",
+    reveal: "Toon hint {n} van {total}",
+    answerBadge: "Antwoord",
+    intro: "Hints verschijnen een voor een. De laatste hint geeft het antwoord.",
+  },
+  video: {
+    captionNote: "Ondertiteling en transcript zijn beschikbaar op YouTube.",
+    openNewTab: "Openen op YouTube",
+  },
+  start: {
+    namePrompt: "Welke naam moet het kasteel onthouden?",
+    namePlaceholder: "Je naam",
+    nameHelp: "Alleen gebruikt op je lokale certificaat. Het verlaat deze browser nooit.",
+    begin: "Betreed de kamer",
+  },
+  tp: {
+    progress: "Ronde {n} van {total}",
+    scoreSoFar: "{correct} tot nu toe goed",
+    question: "Welk woord voorspelt de machine het waarschijnlijkst als volgende?",
+    hintPick: "Kies het meest waarschijnlijke volgende token.",
+    picked: "Jij koos:",
+    correct: "Correct. Dat was het meest waarschijnlijke token.",
+    incorrect: "Niet het meest waarschijnlijke. Bekijk de verdeling hieronder.",
+    probabilityHeading: "De kans die de machine aan elk token toekent",
+    voicePattern: "Patroonmachine",
+    voiceReasoning: "Redeneermodel",
+    voiceIntro: "Twee machines, twee antwoorden:",
+    nextRound: "Volgende ronde",
+    seeResult: "Bekijk resultaat",
+    resultPassTitle: "Het onderhoudsluik zwaait open",
+    resultFailTitle: "De machine hapert",
+    resultScore: "{correct} van {total} goed",
+    resultPass: "Je voorspelde als de machine. Achter het bedieningspaneel staat de brandstof in een plaatje gegraveerd.",
+    resultFail: "Je hebt minstens {threshold} van {total} nodig om het plaatje te lezen. Reset de ronde en probeer opnieuw.",
+    retry: "Opnieuw proberen",
+    gateReveal: "Op het plaatje staat:",
+  },
+  wip: {
+    banner:
+      "Deze kamer is nog in aanbouw. De verhaallijn en de code werken, maar de volledige puzzel komt in een latere build.",
+  },
+  certificate: {
+    eyebrow: "Certificaat van deelname",
+    title: "Je bent ontsnapt uit het kasteel",
+    body: "Dit bevestigt dat {name} de machine begreep, door haar woorden heen keek, en toetsing kan ontwerpen die zij niet kan vervalsen.",
+    anonymous: "een anonieme wetenschapper",
+    charterLabel: "Mijn AI-integriteitsbelofte",
+    codeLabel: "Voltooiingscode",
+    codeHelp: "Plak deze code in de Canvas wall-of-fame draad.",
+    disclaimer:
+      "Niet-gepersonaliseerd certificaat van deelname. Er zijn geen persoonsgegevens uit je browser vertrokken.",
+    print: "Certificaat afdrukken",
+    replay: "Opnieuw spelen",
+  },
+};

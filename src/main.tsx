@@ -1,0 +1,19 @@
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { App } from "./App";
+import { I18nProvider } from "./i18n/I18nProvider";
+import { ProgressProvider } from "./state/useProgress";
+import "./styles/theme.css";
+
+const rootEl = document.getElementById("root");
+if (!rootEl) throw new Error("Root element #root not found");
+
+createRoot(rootEl).render(
+  <StrictMode>
+    <I18nProvider>
+      <ProgressProvider>
+        <App />
+      </ProgressProvider>
+    </I18nProvider>
+  </StrictMode>,
+);
