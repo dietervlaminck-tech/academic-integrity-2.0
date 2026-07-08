@@ -2,12 +2,13 @@ import { useI18n } from "../i18n";
 import { machineRoomCheck, roomContent } from "../content/rooms";
 import { hints as puzzleHints } from "../content/puzzles";
 import { RoomShell } from "../components/RoomShell";
+import { PuzzleIntro } from "../components/PuzzleIntro";
+import { NarrativeSections } from "../components/NarrativeSections";
 import { QuestionCheck } from "../components/QuestionCheck";
 import { TokenPredictor } from "../components/TokenPredictor";
 import { SourceChecker } from "../components/SourceChecker";
 import { AlignmentBuilder } from "../components/AlignmentBuilder";
 import { Crossword } from "../components/Crossword";
-import { ExternalEmbed } from "../components/ExternalEmbed";
 import { CodeGate } from "../components/CodeGate";
 import { HintButton } from "../components/HintButton";
 import { isCleared, nextRoom, type Room } from "../state/progress";
@@ -55,25 +56,15 @@ export function RoomScreen({ room }: { room: Room }) {
 
   return (
     <RoomShell content={content}>
-      {room === "LIBRARY" && (
-        <>
-          {content.activityEmbed && (
-            <>
-              <ExternalEmbed
-                src={content.activityEmbed.src}
-                title={content.activityEmbed.title}
-              />
-              <p className="tp__question">{t.crossword.orSolveHere}</p>
-            </>
-          )}
-          <Crossword />
-        </>
-      )}
+      {content.puzzleIntro && <PuzzleIntro paragraphs={content.puzzleIntro} />}
+
+      {room === "LIBRARY" && <Crossword />}
 
       {room === "MACHINE_ROOM" && (
         <>
-          <QuestionCheck questions={machineRoomCheck} />
           <TokenPredictor />
+          {content.postPuzzle && <NarrativeSections sections={content.postPuzzle} />}
+          <QuestionCheck questions={machineRoomCheck} />
         </>
       )}
 

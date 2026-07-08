@@ -7,9 +7,10 @@ import {
   type Direction,
 } from "../game/crossword";
 
-// Native crossword fallback for Room 1. Each clue has its own answer field (validated live,
-// uppercased, capped at the answer length) so the room is solvable and accessible without
-// the external Interacty embed. Solving clue 4 reveals the gate code APA.
+// Room 1's primary puzzle: the native crossword. Each clue has its own answer field
+// (validated live, uppercased, capped at the answer length), fully keyboard-accessible.
+// Solving clue 4 reveals the gate code APA. The identical Interacty version is only an
+// optional external link in the room's extras aside.
 
 const DIRECTIONS: Direction[] = ["across", "down"];
 
