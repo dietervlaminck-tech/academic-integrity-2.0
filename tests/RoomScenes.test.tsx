@@ -40,7 +40,6 @@ describe("Library scene", () => {
     seed("LIBRARY", { START: "x" });
     const user = userEvent.setup();
     renderApp();
-    await user.click(screen.getByRole("button", { name: en.scene.toggleExplore }));
 
     // Theory hotspots 1 and 2.
     for (const i of [0, 1]) {
@@ -82,7 +81,6 @@ describe("Door scene", () => {
     seed("DOOR", { START: "x", LIBRARY: "x", MACHINE_ROOM: "x", STUDY: "x", WORKSHOP: "x" });
     const user = userEvent.setup();
     renderApp();
-    await user.click(screen.getByRole("button", { name: en.scene.toggleExplore }));
 
     // 1: the letter hands over the final word.
     await user.click(screen.getByRole("button", { name: plain(1, doorScene[0]!.title) }));

@@ -90,11 +90,11 @@ export const en = {
     learnHeading: "What you will learn",
     howHeading: "How this works",
     how: [
-      "The castle has five rooms. Each room first teaches, then tests: read the theory, then solve the puzzle it prepares you for.",
+      "The castle has five rooms, each an explorable scene. Work through its numbered objects in order: a room first teaches, then tests, and finishing one object unlocks the next.",
       "Every puzzle reveals an access code. Type it in CAPITALS to unlock the next room.",
       "Stuck? Every room has an \"I'm stuck\" button with three hints; the third hint gives the answer.",
       "Your progress is saved in this browser, so you can leave and return later. A full playthrough takes about 45 minutes.",
-      "Everything is playable by keyboard. The interface is available in English and Dutch; the course itself is in English.",
+      "Everything is playable by keyboard, and every room has a Reading view toggle with the same content as plain text. The interface is available in English and Dutch; the course itself is in English.",
     ],
   },
   shell: {
@@ -103,7 +103,7 @@ export const en = {
     extrasHeading: "Optional extras (each opens in a new tab)",
   },
   scene: {
-    toggleExplore: "Explore the room (prototype)",
+    toggleExplore: "Explore the room",
     toggleReading: "Reading view",
     viewLabel: "View",
     regionLabel: "{room} as an explorable scene",

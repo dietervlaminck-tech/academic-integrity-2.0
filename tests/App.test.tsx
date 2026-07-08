@@ -16,7 +16,7 @@ function renderApp() {
   );
 }
 
-describe("App playthrough (Start -> Library -> Machine Room)", () => {
+describe("App playthrough in the reading view (Start -> Library -> Machine Room)", () => {
   it("routes through the gate and resumes after a reload", async () => {
     const user = userEvent.setup();
     const view = renderApp();
@@ -25,10 +25,11 @@ describe("App playthrough (Start -> Library -> Machine Room)", () => {
     await user.type(screen.getByLabelText(en.start.namePrompt), "Dieter");
     await user.click(screen.getByRole("button", { name: en.start.begin }));
 
-    // Library (placeholder) with its APA gate.
+    // The Library opens as a scene by default; this test exercises the flat flow.
     expect(
       screen.getByRole("heading", { level: 1, name: en.rooms.LIBRARY }),
     ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: en.scene.toggleReading }));
 
     await user.type(screen.getByLabelText(en.gate.ariaInput), "APA");
     await user.click(screen.getByRole("button", { name: en.gate.submit }));
@@ -60,6 +61,7 @@ describe("App playthrough (Start -> Library -> Machine Room)", () => {
     renderApp();
 
     await user.click(screen.getByRole("button", { name: en.start.begin }));
+    await user.click(screen.getByRole("button", { name: en.scene.toggleReading }));
     await user.type(screen.getByLabelText(en.gate.ariaInput), "WRONG");
     await user.click(screen.getByRole("button", { name: en.gate.submit }));
 
