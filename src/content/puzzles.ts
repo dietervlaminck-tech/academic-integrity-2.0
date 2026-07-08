@@ -193,7 +193,7 @@ export const alignmentDistractorFeedback: Record<string, string> = {
   da1: "Watching is not practising. No outcome here is 'describe a lecture'; the activity must rehearse the performance the assessment will check.",
 };
 
-// ---------- ROOM 1: Crossword (native fallback; primary = Interacty embed) ----------
+// ---------- ROOM 1: Crossword (native in-app puzzle; Interacty = optional extra) ----------
 // Answers uppercase. Q4 vertical yields the gate code APA.
 export const crosswordClues = {
   vertical: [

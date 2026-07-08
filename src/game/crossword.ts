@@ -1,8 +1,9 @@
-// Pure logic for the Room 1 native crossword fallback.
+// Pure logic for the Room 1 crossword.
 //
-// The Library primarily embeds the existing Interacty crossword; this native solver uses
-// the same six clues (from content/puzzles.ts) so the room stays completable when the
-// external embed is blocked (e.g. inside a Canvas iframe) and so it is fully accessible.
+// The native crossword is the Library's primary (and only in-app) puzzle; the identical
+// Interacty version is offered solely as an optional external link in the room's
+// "Optional extras" aside (Interacty refuses framing, so it is never embedded). This
+// solver uses the six clues from content/puzzles.ts and is fully keyboard-accessible.
 // The answer to clue 4 is the gate code APA.
 
 import { crosswordClues, gateCodes } from "../content/puzzles";

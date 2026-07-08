@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useI18n } from "../i18n";
-import { startLetter } from "../content/rooms";
+import { courseGoals, startLetter } from "../content/rooms";
 import { NarrativeSections } from "../components/NarrativeSections";
 import { RoomIllustration } from "../components/RoomIllustration";
 import { useProgress } from "../state/useProgress";
@@ -19,6 +19,30 @@ export function StartScreen() {
       <RoomIllustration room="START" />
 
       <NarrativeSections sections={startLetter} />
+
+      <section aria-labelledby="overview-learn">
+        <h2 id="overview-learn" className="overview__heading">
+          {t.overview.learnHeading}
+        </h2>
+        <ol className="goals">
+          {courseGoals.map(({ room, goal }) => (
+            <li key={room}>
+              <strong>{t.rooms[room]}:</strong> {goal}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="overview-how">
+        <h2 id="overview-how" className="overview__heading">
+          {t.overview.howHeading}
+        </h2>
+        <ul className="content-list">
+          {t.overview.how.map((line, i) => (
+            <li key={i}>{line}</li>
+          ))}
+        </ul>
+      </section>
 
       <form
         onSubmit={(e) => {

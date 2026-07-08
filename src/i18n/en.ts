@@ -86,9 +86,21 @@ export const en = {
     retry: "Try again",
     gateReveal: "The plate reads:",
   },
-  embed: {
-    fallback: "If the activity does not load here, open it in a new tab:",
-    openNewTab: "Open in a new tab",
+  overview: {
+    learnHeading: "What you will learn",
+    howHeading: "How this works",
+    how: [
+      "The castle has five rooms. Each room first teaches, then tests: read the theory, then solve the puzzle it prepares you for.",
+      "Every puzzle reveals an access code. Type it in CAPITALS to unlock the next room.",
+      "Stuck? Every room has an \"I'm stuck\" button with three hints; the third hint gives the answer.",
+      "Your progress is saved in this browser, so you can leave and return later. A full playthrough takes about 45 minutes.",
+      "Everything is playable by keyboard. The interface is available in English and Dutch; the course itself is in English.",
+    ],
+  },
+  shell: {
+    goalLabel: "Learning goal",
+    yourTurn: "Your turn",
+    extrasHeading: "Optional extras (each opens in a new tab)",
   },
   crossword: {
     heading: "The crossword",
@@ -99,7 +111,6 @@ export const en = {
     solved: "Solved",
     progress: "{solved} of {total} clues solved",
     gateCallout: "Clue 4 is the code for the doors: {code}",
-    orSolveHere: "Prefer to solve it here? Use the native version below.",
   },
   alignment: {
     heading: "The alignment builder",
@@ -133,12 +144,12 @@ export const en = {
   },
   check: {
     heading: "Video check",
-    intro: "Two quick questions on the reasoning-LLMs video.",
+    intro: "Two quick questions covering both ideas: next-token prediction and reasoning models. They give feedback only; your code comes from the token game above.",
     question: "Question {n} of {total}",
     correct: "Correct.",
     incorrect: "Not quite. The correct answer is highlighted.",
     summary: "{correct} of {total} correct.",
-    allCorrect: "Both correct. You have the idea; now try the machine's job below.",
+    allCorrect: "Both correct. The plate behind the control panel holds the code; enter it below.",
   },
   wip: {
     banner:
