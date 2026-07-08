@@ -5,6 +5,10 @@
 // punctuation (commas / colons / sentence breaks) without altering any wording. Markdown
 // emphasis in the source is rendered as plain prose.
 //
+// Deviation (Dieter, 2026-07-08): the Machine Room's token examples were translated from
+// Dutch to English so the e-learning stands alone; no copy may reference lectures or
+// other course moments outside this app. Module 4's Dutch assessment terms stay, glossed.
+//
 // Scaffolding copy (learning goals, "your turn" puzzle introductions, the course overview
 // and glosses for the Dutch examples) is instructional text added at Dieter's request; it
 // derives from the module outcomes and puzzle rules in the course design and never
@@ -173,15 +177,15 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
         heading: "Think like a transformer",
         body: [
           "Try the machine's job yourself.",
-          "Dieter eet graag…? a tosti? a gazon? You know it is not \"gazon\". Why? Context.",
-          "Dieter houdt van tomaten en kaas. Hij lust geen brood. Hij eet graag…? now \"salade Caprese\" beats \"tosti\". More context, better prediction.",
+          "Dieter likes to eat…? A toasted sandwich? A lawn? You know it is not \"a lawn\". Why? Context.",
+          "Dieter loves tomatoes and cheese. He does not eat bread. He likes to eat…? Now \"a Caprese salad\" beats \"a toasted sandwich\". More context, better prediction.",
           "This is everything the Ghostwriter does, billions of times per answer. The more context you give it, the more precise its prediction, but there is always an element of chance. That is why the same question can produce different answers, and why an answer can be fluent and wrong at the same time.",
         ],
       },
     ],
     puzzleIntro: [
       "Now do the machine's job for real. Six rounds: each shows the text a model has received, and four candidates for the next token. Pick the candidate you think the model rates most probable; after every pick the hidden distribution is revealed, with a note on how the context shifted it.",
-      "The first three rounds are in Dutch, exactly as in the original Nyenrode lecture: Dieter is simply a colleague deciding what to eat. You need no Dutch to play: 'een tosti' is a toasted sandwich, 'een salade' a salad, and 'een gazon' is a lawn, which is exactly why the machine rates it improbable. Two English rounds follow, and the finale is Dutch again: a children's rhyme in which the nonsense word 'ork' rhymes with 'vork' (a fork), while soup ('soep') is sensibly eaten with a 'lepel' (a spoon); 'mes' is a knife and 'rietje' a straw.",
+      "The first three rounds follow Dieter, a colleague deciding what to eat: watch how every added sentence of context reshuffles the distribution. Two rounds then show the same word ('server') changing meaning with its neighbourhood, and the finale is a nursery-style rhyme with a trap in it.",
       "Score at least five of six and the machine surrenders its code. One warning for the final round: it asks what the pattern machine would say, not what a sensible person would.",
     ],
     postPuzzle: [
@@ -190,7 +194,7 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
         heading: "Reasoning models",
         body: [
           "You just felt the trap yourself: fluent pattern-completion is not judgement.",
-          "Ork, ork, ork, soep eet je met een…? A pure language-pattern machine says vork (it rhymes!). A reasoning model pauses: \"You don't eat soup with a fork. This is a joke, but the sensible answer is lepel.\"",
+          "Fork, fork, fork, you eat your soup with a…? A pure language-pattern machine says fork (it rhymes!). A reasoning model pauses: \"You don't eat soup with a fork. This is a joke, but the sensible answer is a spoon.\"",
           "Watch This Is How Reasoning LLMs Really Work to see what changed in 2025, and what did not.",
         ],
       },
@@ -269,7 +273,7 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
       },
     ],
     gateRevealText:
-      "The C-shaped key fits. Inside lies an anagram puzzle; in the Canvas course, the answer to question 4 opens the next room. You also find a heavy iron key shaped like the letter A.",
+      "The C-shaped key fits. Inside lies an anagram puzzle, yours to play whenever you like. You also find a heavy iron key shaped like the letter A.",
   },
 
   WORKSHOP: {
@@ -327,7 +331,7 @@ export const rooms: Record<Exclude<Room, "START" | "ESCAPED">, RoomContent> = {
       {
         label: "Riddle-match puzzle (Interacty)",
         url: "https://interacty.me/projects/80080830faefbcf9",
-        note: "A riddle-match about Turnitin, workshops and the ethics lecture.",
+        note: "A riddle-match on the themes of this course.",
       },
     ],
     gateRevealText:
@@ -374,19 +378,27 @@ export function roomContent(room: Room): RoomContent | null {
   return rooms[room];
 }
 
-// ---------- Machine Room scene (explorable-room prototype) ----------
-// Maps each clickable object in the scene to the content it opens. Panel titles are the
-// object names from the course pack ("The control panel" and "The maintenance hatch" are
-// the Module 2 quiz and gate names). `sections` indexes into rooms.MACHINE_ROOM.intro;
-// the scene never introduces copy of its own, it only re-frames the reading view.
+// ---------- Explorable scenes (one per room) ----------
+// Each hotspot maps a clickable object in a room's scene to the content it opens. Panel
+// titles are object names from the course pack where one exists (e.g. "The control
+// panel", "The bottom doors", "The wall of fame"). `sections` indexes into the room's
+// intro; the scenes never introduce copy of their own, they only re-frame the reading
+// view. Hotspots unlock linearly, in array order.
 
 export type SceneHotspotContent = {
-  id: "machine" | "poster" | "panel" | "terminal" | "hatch";
+  id: string;
   title: string;
-  kind: "intro" | "puzzle" | "post" | "gate";
-  /** For kind "intro": which rooms.MACHINE_ROOM.intro sections this panel shows. */
+  kind: "intro" | "puzzle" | "post" | "gate" | "charter";
+  /** Which of the room's intro sections this panel shows (lead-in for puzzle panels). */
   sections?: number[];
 };
+
+export const libraryScene: SceneHotspotContent[] = [
+  { id: "bookcase", title: "The bookcase", kind: "intro", sections: [0] },
+  { id: "shelf", title: "The policy shelf", kind: "intro", sections: [1, 2] },
+  { id: "greenbook", title: "The green book", kind: "puzzle", sections: [3] },
+  { id: "doors", title: "The bottom doors", kind: "gate" },
+];
 
 export const machineRoomScene: SceneHotspotContent[] = [
   { id: "machine", title: "The machine on the desk", kind: "intro", sections: [0, 1, 2] },
@@ -395,6 +407,42 @@ export const machineRoomScene: SceneHotspotContent[] = [
   { id: "terminal", title: "Reasoning models", kind: "post" },
   { id: "hatch", title: "The maintenance hatch", kind: "gate" },
 ];
+
+export const studyScene: SceneHotspotContent[] = [
+  { id: "notebook", title: "The notebook", kind: "intro", sections: [0, 1] },
+  { id: "topdrawer", title: "The top-left drawer", kind: "intro", sections: [2] },
+  { id: "bottomdrawer", title: "The bottom-right drawer", kind: "intro", sections: [3] },
+  { id: "paperwork", title: "The pile of paperwork", kind: "puzzle" },
+  { id: "deskdrawer", title: "The desk drawer", kind: "gate" },
+];
+
+export const workshopScene: SceneHotspotContent[] = [
+  { id: "chest", title: "The chest of drawers", kind: "intro", sections: [0] },
+  { id: "drawer1", title: "Drawer 1: Constructive alignment", kind: "intro", sections: [1] },
+  { id: "drawer2", title: "Drawer 2: The four quality criteria", kind: "intro", sections: [2] },
+  {
+    id: "drawer3",
+    title: "Drawer 3: Three moves that keep assessment valid",
+    kind: "intro",
+    sections: [3, 4],
+  },
+  { id: "workbench", title: "The workbench", kind: "puzzle" },
+  { id: "locked", title: "The locked drawer", kind: "gate" },
+];
+
+export const doorScene: SceneHotspotContent[] = [
+  { id: "letter", title: "Open the door", kind: "intro", sections: [0] },
+  { id: "wall", title: "The wall of fame", kind: "charter" },
+  { id: "lock", title: "The lock", kind: "gate" },
+];
+
+export const roomScenes: Record<Exclude<Room, "START" | "ESCAPED">, SceneHotspotContent[]> = {
+  LIBRARY: libraryScene,
+  MACHINE_ROOM: machineRoomScene,
+  STUDY: studyScene,
+  WORKSHOP: workshopScene,
+  DOOR: doorScene,
+};
 
 // ---------- Room 2: two-question check tied to the reasoning-LLMs video ----------
 // Questions and options are transcribed verbatim from the "The control panel" quiz in

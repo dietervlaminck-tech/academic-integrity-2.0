@@ -1,11 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import { fmt, useI18n } from "../i18n";
-import {
-  machineRoomCheck,
-  machineRoomScene,
-  type RoomContent,
-  type SceneHotspotContent,
-} from "../content/rooms";
+import { machineRoomCheck, machineRoomScene } from "../content/rooms";
+import { RoomScene, sectionsForPanel, type SceneHotspot, type ScenePanelProps } from "./RoomScene";
 import { NarrativeSections } from "./NarrativeSections";
 import { PuzzleIntro } from "./PuzzleIntro";
 import { TokenPredictor } from "./TokenPredictor";
@@ -13,26 +8,11 @@ import { QuestionCheck } from "./QuestionCheck";
 import { CodeGate } from "./CodeGate";
 import { HintButton } from "./HintButton";
 
-// Explorable-room prototype for the Machine Room ("3D space" direction, step 1).
-//
-// The room is a flat-perspective SVG scene; five numbered hotspots sit on the objects
-// (machine, poster, control panel, terminal, hatch) and open panels containing exactly
-// the reading view's content, in the same didactic order. The first unvisited hotspot
-// carries the single golden accent so the suggested path is always visible.
-//
-// All five panels stay mounted (hidden, not unmounted) so puzzle state survives closing
-// and reopening a panel. The reading view remains the default and the a11y baseline;
-// this component is an opt-in enhancement behind the view toggle in RoomScreen.
+// The Machine Room as an explorable scene: machine (theory + video), transformer poster,
+// control panel (token game), terminal (reasoning theory + check), maintenance hatch
+// (gate). Interaction model and linear unlocking live in RoomScene.
 
-type MachineRoomSceneProps = {
-  content: RoomContent;
-  /** Returns true when the code opens the gate (wired to the progress machine). */
-  onGateSubmit: (code: string) => boolean;
-  hints: readonly [string, string, string] | null;
-};
-
-/** Hotspot positions as percentages of the scene box (matches the SVG's viewBox). */
-const HOTSPOT_POS: Record<SceneHotspotContent["id"], { x: number; y: number }> = {
+const POS: Record<string, { x: number; y: number }> = {
   machine: { x: 50, y: 47 },
   poster: { x: 20, y: 32 },
   panel: { x: 85, y: 37 },
@@ -111,178 +91,60 @@ function SceneArt() {
   );
 }
 
-export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSceneProps) {
+export function MachineRoomScene({ content, onGateSubmit, hints }: ScenePanelProps) {
   const { t } = useI18n();
-  const [active, setActive] = useState<string | null>(null);
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const hotspotRefs = useRef(new Map<string, HTMLButtonElement>());
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const lastActive = useRef<string | null>(null);
 
-  // Linear design: a hotspot unlocks only when every hotspot before it is completed.
-  // Theory panels complete on opening; the control panel completes when the token game
-  // is passed; the terminal completes when both check questions are answered.
-  const firstIncomplete = machineRoomScene.findIndex((h) => !completed.has(h.id));
-  const nextIndex = firstIncomplete === -1 ? null : firstIncomplete;
-  const isUnlocked = (index: number) => nextIndex === null || index <= nextIndex;
-
-  function complete(id: string) {
-    setCompleted((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
-  }
-
-  function open(hotspot: SceneHotspotContent, index: number) {
-    if (!isUnlocked(index)) return;
-    lastActive.current = hotspot.id;
-    if (hotspot.kind === "intro") complete(hotspot.id);
-    setActive(hotspot.id);
-  }
-
-  function close() {
-    setActive(null);
-    const id = lastActive.current;
-    if (id) hotspotRefs.current.get(id)?.focus();
-  }
-
-  useEffect(() => {
-    if (active) dialogRef.current?.focus();
-  }, [active]);
-
-  // The dialog header already shows the panel title, so drop a leading section heading
-  // that would repeat it verbatim.
-  function withoutTitleHeading<T extends { kind: string; heading?: string }>(
-    sections: T[],
-    title: string,
-  ): T[] {
-    return sections.map((s) =>
-      "heading" in s && s.heading === title ? { ...s, heading: undefined } : s,
-    );
-  }
-
-  function panelBody(hotspot: SceneHotspotContent) {
-    switch (hotspot.kind) {
-      case "intro":
-        return (
-          <NarrativeSections
-            sections={withoutTitleHeading(
-              (hotspot.sections ?? []).map((i) => content.intro[i]!).filter(Boolean),
-              hotspot.title,
-            )}
-          />
-        );
-      case "puzzle":
-        return (
-          <>
-            {content.puzzleIntro && <PuzzleIntro paragraphs={content.puzzleIntro} />}
-            <TokenPredictor onSolved={() => complete("panel")} />
-          </>
-        );
-      case "post":
-        return (
-          <>
-            {content.postPuzzle && (
-              <NarrativeSections
-                sections={withoutTitleHeading(content.postPuzzle, hotspot.title)}
-              />
-            )}
-            <QuestionCheck
-              questions={machineRoomCheck}
-              onAllAnswered={() => complete("terminal")}
+  const hotspots: SceneHotspot[] = machineRoomScene.map((h) => ({
+    id: h.id,
+    title: h.title,
+    pos: POS[h.id]!,
+    completeOnOpen: h.kind === "intro",
+    render: (complete) => {
+      switch (h.kind) {
+        case "puzzle":
+          return (
+            <>
+              {content.puzzleIntro && <PuzzleIntro paragraphs={content.puzzleIntro} />}
+              <TokenPredictor onSolved={complete} />
+            </>
+          );
+        case "post":
+          return (
+            <>
+              {content.postPuzzle && (
+                <NarrativeSections
+                  sections={sectionsForPanel(
+                    content.postPuzzle,
+                    content.postPuzzle.map((_, i) => i),
+                    h.title,
+                  )}
+                />
+              )}
+              <QuestionCheck questions={machineRoomCheck} onAllAnswered={complete} />
+            </>
+          );
+        case "gate":
+          return (
+            <>
+              <CodeGate onSubmit={onGateSubmit} />
+              {hints && <HintButton hints={hints} />}
+            </>
+          );
+        default:
+          return (
+            <NarrativeSections
+              sections={sectionsForPanel(content.intro, h.sections, h.title)}
             />
-          </>
-        );
-      case "gate":
-        return (
-          <>
-            <CodeGate onSubmit={onGateSubmit} />
-            {hints && <HintButton hints={hints} />}
-          </>
-        );
-    }
-  }
+          );
+      }
+    },
+  }));
 
   return (
-    <section className="scene-wrap" aria-label={t.scene.regionLabel}>
-      <p className="tp__question">{t.scene.hint}</p>
-
-      <div className="scene">
-        <SceneArt />
-        {machineRoomScene.map((hotspot, i) => {
-          const pos = HOTSPOT_POS[hotspot.id];
-          const done = completed.has(hotspot.id);
-          const unlocked = isUnlocked(i);
-          const isNext = i === nextIndex;
-          const label = fmt(
-            !unlocked
-              ? t.scene.hotspotLocked
-              : done
-                ? t.scene.hotspotVisited
-                : t.scene.hotspot,
-            { num: i + 1, title: hotspot.title },
-          );
-          return (
-            <button
-              key={hotspot.id}
-              ref={(el) => {
-                if (el) hotspotRefs.current.set(hotspot.id, el);
-              }}
-              type="button"
-              className={
-                "hotspot" +
-                (isNext ? " hotspot--next" : "") +
-                (done ? " hotspot--visited" : "") +
-                (!unlocked ? " hotspot--locked" : "")
-              }
-              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-              aria-label={label}
-              aria-haspopup="dialog"
-              aria-disabled={!unlocked}
-              onClick={() => open(hotspot, i)}
-            >
-              <span className="hotspot__badge" aria-hidden="true">
-                {done ? "✓" : i + 1}
-              </span>
-              <span className="hotspot__label" aria-hidden="true">
-                {hotspot.title}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Panels stay mounted so puzzle progress survives closing a panel. */}
-      {machineRoomScene.map((hotspot) => {
-        const isActive = active === hotspot.id;
-        return (
-          <div
-            key={hotspot.id}
-            className="scenepanel__backdrop"
-            hidden={!isActive}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) close();
-            }}
-          >
-            <div
-              ref={isActive ? dialogRef : undefined}
-              role="dialog"
-              aria-modal="true"
-              aria-label={hotspot.title}
-              className="scenepanel"
-              tabIndex={-1}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") close();
-              }}
-            >
-              <header className="scenepanel__header">
-                <h3>{hotspot.title}</h3>
-                <button type="button" className="btn btn--secondary" onClick={close}>
-                  {t.scene.close}
-                </button>
-              </header>
-              <div className="scenepanel__body">{panelBody(hotspot)}</div>
-            </div>
-          </div>
-        );
-      })}
-    </section>
+    <RoomScene
+      label={fmt(t.scene.regionLabel, { room: t.rooms.MACHINE_ROOM })}
+      art={<SceneArt />}
+      hotspots={hotspots}
+    />
   );
 }

@@ -106,7 +106,7 @@ export const en = {
     toggleExplore: "Explore the room (prototype)",
     toggleReading: "Reading view",
     viewLabel: "View",
-    regionLabel: "The Machine Room as an explorable scene",
+    regionLabel: "{room} as an explorable scene",
     hint: "Work through the numbered objects in order; finishing one unlocks the next. Every panel contains the same content as the reading view.",
     close: "Close",
     hotspot: "{num}. {title}",
