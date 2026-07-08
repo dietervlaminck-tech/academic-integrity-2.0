@@ -91,11 +91,11 @@ export const nl: Dict = {
     learnHeading: "Wat je gaat leren",
     howHeading: "Zo werkt het",
     how: [
-      "Het kasteel telt vijf kamers. Elke kamer legt eerst uit en toetst daarna: lees de theorie en los daarna de puzzel op waar die je op voorbereidt.",
+      "Het kasteel telt vijf kamers, elk een verkenbare scène. Werk de genummerde objecten in volgorde af: een kamer legt eerst uit en toetst daarna, en elk afgerond object ontgrendelt het volgende.",
       "Elke puzzel onthult een toegangscode. Typ die in HOOFDLETTERS om de volgende kamer te openen.",
       "Zit je vast? Elke kamer heeft een knop \"Ik zit vast\" met drie hints; de derde hint geeft het antwoord.",
       "Je voortgang wordt in deze browser bewaard; je kunt weggaan en later verdergaan. Het hele spel duurt ongeveer 45 minuten.",
-      "Alles is met het toetsenbord speelbaar. De interface is beschikbaar in het Engels en het Nederlands; de cursus zelf is in het Engels.",
+      "Alles is met het toetsenbord speelbaar, en elke kamer heeft een knop Leesweergave met dezelfde inhoud in gewone tekst. De interface is beschikbaar in het Engels en het Nederlands; de cursus zelf is in het Engels.",
     ],
   },
   shell: {
@@ -104,7 +104,7 @@ export const nl: Dict = {
     extrasHeading: "Optionele extra's (openen elk in een nieuw tabblad)",
   },
   scene: {
-    toggleExplore: "Verken de kamer (prototype)",
+    toggleExplore: "Verken de kamer",
     toggleReading: "Leesweergave",
     viewLabel: "Weergave",
     regionLabel: "{room} als verkenbare scène",

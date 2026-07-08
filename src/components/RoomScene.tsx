@@ -44,6 +44,46 @@ export function sectionsForPanel(
     .map((s) => ("heading" in s && s.heading === title ? { ...s, heading: undefined } : s));
 }
 
+/**
+ * Shared scene backdrop: castle wall with stone coursing, a soft light glow, and a
+ * floor with boards. Every room's art starts with this so the castle feels like one
+ * building. Rendered inside the scene's <svg viewBox="0 0 960 540">.
+ */
+export function SceneBackdrop() {
+  return (
+    <>
+      <defs>
+        <radialGradient id="scene-glow" cx="50%" cy="28%" r="80%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+          <stop offset="65%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="scene-floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#cdd4de" />
+          <stop offset="100%" stopColor="#dfe4ea" />
+        </linearGradient>
+      </defs>
+      <rect width="960" height="540" fill="#e7ebf1" />
+      {/* stone coursing on the wall */}
+      <g stroke="#dde2ea" strokeWidth="2">
+        <line x1="0" y1="120" x2="960" y2="120" />
+        <line x1="0" y1="220" x2="960" y2="220" />
+        <line x1="0" y1="320" x2="960" y2="320" />
+        <line x1="240" y1="120" x2="240" y2="220" />
+        <line x1="720" y1="120" x2="720" y2="220" />
+        <line x1="480" y1="220" x2="480" y2="320" />
+      </g>
+      <rect width="960" height="540" fill="url(#scene-glow)" />
+      <rect y="400" width="960" height="140" fill="url(#scene-floor)" />
+      <rect y="396" width="960" height="8" fill="#c3ccd8" />
+      {/* floor boards */}
+      <g stroke="#c9d0da" strokeWidth="2">
+        <line x1="0" y1="448" x2="960" y2="448" />
+        <line x1="0" y1="498" x2="960" y2="498" />
+      </g>
+    </>
+  );
+}
+
 export function RoomScene({
   label,
   art,
@@ -59,6 +99,7 @@ export function RoomScene({
   const hotspotRefs = useRef(new Map<string, HTMLButtonElement>());
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastActive = useRef<string | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   const firstIncomplete = hotspots.findIndex((h) => !completed.has(h.id));
   const nextIndex = firstIncomplete === -1 ? null : firstIncomplete;
@@ -85,12 +126,35 @@ export function RoomScene({
     if (active) dialogRef.current?.focus();
   }, [active]);
 
+  // Subtle depth: the stage tilts a few degrees toward the pointer. The transform is
+  // applied only under (hover: hover) and (prefers-reduced-motion: no-preference), so
+  // touch and reduced-motion users get a static scene.
+  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    const el = stageRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--tilt-x", String((e.clientX - r.left) / r.width - 0.5));
+    el.style.setProperty("--tilt-y", String((e.clientY - r.top) / r.height - 0.5));
+  }
+
+  function resetTilt() {
+    const el = stageRef.current;
+    el?.style.setProperty("--tilt-x", "0");
+    el?.style.setProperty("--tilt-y", "0");
+  }
+
   return (
     <section className="scene-wrap" aria-label={label}>
       <p className="tp__question">{t.scene.hint}</p>
 
       <div className="scene">
-        {art}
+        <div
+          className="scene__stage"
+          ref={stageRef}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={resetTilt}
+        >
+          {art}
         {hotspots.map((hotspot, i) => {
           const done = completed.has(hotspot.id);
           const unlocked = isUnlocked(i);
@@ -131,6 +195,7 @@ export function RoomScene({
             </button>
           );
         })}
+        </div>
       </div>
 
       {/* Panels stay mounted so puzzle progress survives closing a panel. */}

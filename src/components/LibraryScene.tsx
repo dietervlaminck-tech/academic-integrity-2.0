@@ -1,6 +1,12 @@
 import { fmt, useI18n } from "../i18n";
 import { libraryScene } from "../content/rooms";
-import { RoomScene, sectionsForPanel, type SceneHotspot, type ScenePanelProps } from "./RoomScene";
+import {
+  RoomScene,
+  SceneBackdrop,
+  sectionsForPanel,
+  type SceneHotspot,
+  type ScenePanelProps,
+} from "./RoomScene";
 import { NarrativeSections } from "./NarrativeSections";
 import { PuzzleIntro } from "./PuzzleIntro";
 import { Crossword } from "./Crossword";
@@ -21,10 +27,10 @@ const POS: Record<string, { x: number; y: number }> = {
 function SceneArt() {
   return (
     <svg viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-      {/* wall and floor */}
-      <rect width="960" height="540" fill="#e7ebf1" />
-      <rect y="400" width="960" height="140" fill="#d6dce4" />
-      <rect y="396" width="960" height="8" fill="#c3ccd8" />
+      <SceneBackdrop />
+      {/* grounding shadows */}
+      <ellipse cx="380" cy="466" rx="220" ry="12" fill="#b9c2cf" opacity="0.5" />
+      <ellipse cx="750" cy="438" rx="70" ry="9" fill="#b9c2cf" opacity="0.5" />
       {/* bookcase frame */}
       <rect x="180" y="60" width="400" height="400" rx="8" fill="#355071" />
       {/* top shelf: leather volumes */}

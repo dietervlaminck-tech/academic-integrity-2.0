@@ -1,6 +1,7 @@
-// Persisted choice between the classic reading view and the explorable-scene prototype.
-// Reading view is the default: it is the accessibility baseline and the didactic
-// reference; the scene is an opt-in enhancement.
+// Persisted choice between the explorable scene and the classic reading view. The scene
+// is the default (Dieter, 2026-07-08, after playing the prototype); the reading view
+// stays one toggle away in every room as the plain-text fallback, and both views are
+// fully keyboard-operable.
 
 export type ViewMode = "reading" | "scene";
 
@@ -9,9 +10,9 @@ export const VIEW_STORAGE_KEY = "ghostwriter.view.v1";
 export function loadViewMode(): ViewMode {
   try {
     const raw = localStorage.getItem(VIEW_STORAGE_KEY);
-    return raw === "scene" ? "scene" : "reading";
+    return raw === "reading" ? "reading" : "scene";
   } catch {
-    return "reading";
+    return "scene";
   }
 }
 

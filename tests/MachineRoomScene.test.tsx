@@ -43,34 +43,29 @@ const lockedName = (num: number, title: string) =>
 
 const title = (i: number) => machineRoomScene[i]!.title;
 
-async function enterScene(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("button", { name: en.scene.toggleExplore }));
-}
-
-describe("Machine Room explorable scene (linear prototype)", () => {
-  it("starts with only the first hotspot unlocked; the rest are locked", async () => {
+describe("Machine Room explorable scene (linear, default view)", () => {
+  it("opens as a scene with only the first hotspot unlocked; reading view is one toggle away", async () => {
     seedMachineRoom();
     const user = userEvent.setup();
     renderApp();
 
-    // Reading view by default: the token game is directly on the page.
-    expect(screen.getByText(en.tp.question)).toBeVisible();
-
-    await enterScene(user);
-
+    // Scene by default: hotspot 1 unlocked, the rest locked.
     expect(screen.getByRole("button", { name: plainName(1, title(0)) })).toBeInTheDocument();
     for (let i = 1; i < machineRoomScene.length; i++) {
       expect(
         screen.getByRole("button", { name: lockedName(i + 1, title(i)) }),
       ).toBeInTheDocument();
     }
+
+    // The reading view remains the plain-text fallback.
+    await user.click(screen.getByRole("button", { name: en.scene.toggleReading }));
+    expect(screen.getByText(en.tp.question)).toBeVisible();
   });
 
   it("a locked hotspot does not open its panel", async () => {
     seedMachineRoom();
     const user = userEvent.setup();
     renderApp();
-    await enterScene(user);
 
     await user.click(screen.getByRole("button", { name: lockedName(5, title(4)) }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -80,7 +75,6 @@ describe("Machine Room explorable scene (linear prototype)", () => {
     seedMachineRoom();
     const user = userEvent.setup();
     renderApp();
-    await enterScene(user);
 
     await user.click(screen.getByRole("button", { name: plainName(1, title(0)) }));
     const dialog = screen.getByRole("dialog", { name: title(0) });
@@ -101,7 +95,6 @@ describe("Machine Room explorable scene (linear prototype)", () => {
     seedMachineRoom();
     const user = userEvent.setup();
     renderApp();
-    await enterScene(user);
 
     // 1 + 2: theory panels complete on opening.
     for (const i of [0, 1]) {

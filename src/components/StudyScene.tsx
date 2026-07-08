@@ -1,6 +1,12 @@
 import { fmt, useI18n } from "../i18n";
 import { studyScene } from "../content/rooms";
-import { RoomScene, sectionsForPanel, type SceneHotspot, type ScenePanelProps } from "./RoomScene";
+import {
+  RoomScene,
+  SceneBackdrop,
+  sectionsForPanel,
+  type SceneHotspot,
+  type ScenePanelProps,
+} from "./RoomScene";
 import { NarrativeSections } from "./NarrativeSections";
 import { PuzzleIntro } from "./PuzzleIntro";
 import { SourceChecker } from "./SourceChecker";
@@ -23,10 +29,9 @@ const POS: Record<string, { x: number; y: number }> = {
 function SceneArt() {
   return (
     <svg viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-      {/* wall and floor */}
-      <rect width="960" height="540" fill="#e7ebf1" />
-      <rect y="400" width="960" height="140" fill="#d6dce4" />
-      <rect y="396" width="960" height="8" fill="#c3ccd8" />
+      <SceneBackdrop />
+      {/* grounding shadow under the desk */}
+      <ellipse cx="460" cy="492" rx="230" ry="12" fill="#b9c2cf" opacity="0.5" />
       {/* arched window, left */}
       <path d="M100 300 v-140 a70 70 0 0 1 140 0 v140 z" fill="#5d7291" />
       <path d="M110 292 v-132 a60 60 0 0 1 120 0 v132 z" fill="#f0f2f5" />

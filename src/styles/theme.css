@@ -831,9 +831,28 @@ a {
   margin-bottom: 1rem;
 }
 
+/* ---------- Room transition ---------- */
+/* A short "stepping through the doorway" entrance on every room change. */
+@media (prefers-reduced-motion: no-preference) {
+  .room-enter {
+    animation: room-enter 0.45s ease-out;
+  }
+}
+@keyframes room-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -858,11 +877,26 @@ a {
   border-radius: var(--ny-radius);
   overflow: hidden;
   background: #e7ebf1;
+  perspective: 900px;
+}
+.scene__stage {
+  position: relative;
 }
 .scene svg {
   display: block;
   width: 100%;
   height: auto;
+}
+/* Subtle depth: the stage tilts a few degrees toward the pointer (set as --tilt-x/-y by
+   RoomScene). Hover-capable, motion-tolerant devices only; the slight scale hides the
+   edges the tilt would otherwise reveal. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .scene__stage {
+    transform: scale(1.03) rotateX(calc(var(--tilt-y, 0) * -3deg))
+      rotateY(calc(var(--tilt-x, 0) * 4deg));
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+  }
 }
 
 .hotspot {
@@ -891,9 +925,18 @@ a {
   background: var(--ny-corporate);
   border: 2px solid var(--ny-white);
   box-shadow: 0 2px 8px rgba(53, 80, 113, 0.35);
+  transition:
+    transform 0.15s ease-out,
+    background 0.15s ease-out;
 }
 .hotspot:hover .hotspot__badge {
   background: var(--ny-dark);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hotspot:hover:not(.hotspot--locked) .hotspot__badge,
+  .hotspot:focus-visible .hotspot__badge {
+    transform: scale(1.15);
+  }
 }
 /* The one golden accent on this screen: the suggested next object. */
 .hotspot--next .hotspot__badge {
