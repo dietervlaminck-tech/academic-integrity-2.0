@@ -103,6 +103,16 @@ export const nl: Dict = {
     yourTurn: "Jouw beurt",
     extrasHeading: "Optionele extra's (openen elk in een nieuw tabblad)",
   },
+  scene: {
+    toggleExplore: "Verken de kamer (prototype)",
+    toggleReading: "Leesweergave",
+    viewLabel: "Weergave",
+    regionLabel: "De Machinekamer als verkenbare scène",
+    hint: "Klik de genummerde objecten in volgorde. Elk paneel bevat dezelfde inhoud als de leesweergave.",
+    close: "Sluiten",
+    hotspot: "{num}. {title}",
+    hotspotVisited: "{num}. {title} (bekeken)",
+  },
   crossword: {
     heading: "Het kruiswoordraadsel",
     intro: "Los de aanwijzingen op. Het antwoord op aanwijzing 4 opent de onderste deuren van de boekenkast.",

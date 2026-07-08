@@ -374,6 +374,28 @@ export function roomContent(room: Room): RoomContent | null {
   return rooms[room];
 }
 
+// ---------- Machine Room scene (explorable-room prototype) ----------
+// Maps each clickable object in the scene to the content it opens. Panel titles are the
+// object names from the course pack ("The control panel" and "The maintenance hatch" are
+// the Module 2 quiz and gate names). `sections` indexes into rooms.MACHINE_ROOM.intro;
+// the scene never introduces copy of its own, it only re-frames the reading view.
+
+export type SceneHotspotContent = {
+  id: "machine" | "poster" | "panel" | "terminal" | "hatch";
+  title: string;
+  kind: "intro" | "puzzle" | "post" | "gate";
+  /** For kind "intro": which rooms.MACHINE_ROOM.intro sections this panel shows. */
+  sections?: number[];
+};
+
+export const machineRoomScene: SceneHotspotContent[] = [
+  { id: "machine", title: "The machine on the desk", kind: "intro", sections: [0, 1, 2] },
+  { id: "poster", title: "Think like a transformer", kind: "intro", sections: [3] },
+  { id: "panel", title: "The control panel", kind: "puzzle" },
+  { id: "terminal", title: "Reasoning models", kind: "post" },
+  { id: "hatch", title: "The maintenance hatch", kind: "gate" },
+];
+
 // ---------- Room 2: two-question check tied to the reasoning-LLMs video ----------
 // Questions and options are transcribed verbatim from the "The control panel" quiz in
 // Canvas_ready_content.md (Module 2, Q1 and Q4). Option order is varied so the correct
