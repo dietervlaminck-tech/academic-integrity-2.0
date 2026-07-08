@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useI18n } from "../i18n";
 import { machineRoomCheck, roomContent } from "../content/rooms";
 import { hints as puzzleHints } from "../content/puzzles";
@@ -11,18 +12,53 @@ import { AlignmentBuilder } from "../components/AlignmentBuilder";
 import { Crossword } from "../components/Crossword";
 import { CodeGate } from "../components/CodeGate";
 import { HintButton } from "../components/HintButton";
+import { MachineRoomScene } from "../components/MachineRoomScene";
 import { isCleared, nextRoom, type Room } from "../state/progress";
 import { useProgress } from "../state/useProgress";
+import { loadViewMode, saveViewMode, type ViewMode } from "../state/viewMode";
 
 export function RoomScreen({ room }: { room: Room }) {
   const { t } = useI18n();
   const { state, submitCode, goTo, resetRoom, setCharter } = useProgress();
+  const [view, setView] = useState<ViewMode>(() => loadViewMode());
   const content = roomContent(room);
   if (!content) return null;
 
   const cleared = isCleared(state, room);
   const next = nextRoom(room);
-  const hintTriple = content.hintKey ? puzzleHints[content.hintKey] : null;
+  const hintTriple = (content.hintKey ? puzzleHints[content.hintKey] : null) ?? null;
+
+  // The explorable-scene prototype exists for the Machine Room only. Reading view is
+  // the default and the accessibility baseline.
+  const sceneCapable = room === "MACHINE_ROOM";
+  const sceneOn = sceneCapable && view === "scene" && !cleared;
+
+  function switchView(mode: ViewMode) {
+    setView(mode);
+    saveViewMode(mode);
+  }
+
+  const toolbar =
+    sceneCapable && !cleared ? (
+      <div className="viewtoggle" role="group" aria-label={t.scene.viewLabel}>
+        <button
+          type="button"
+          className={`btn btn--secondary${view === "scene" ? " viewtoggle--active" : ""}`}
+          aria-pressed={view === "scene"}
+          onClick={() => switchView("scene")}
+        >
+          {t.scene.toggleExplore}
+        </button>
+        <button
+          type="button"
+          className={`btn btn--secondary${view === "reading" ? " viewtoggle--active" : ""}`}
+          aria-pressed={view === "reading"}
+          onClick={() => switchView("reading")}
+        >
+          {t.scene.toggleReading}
+        </button>
+      </div>
+    ) : undefined;
 
   if (cleared) {
     return (
@@ -54,8 +90,20 @@ export function RoomScreen({ room }: { room: Room }) {
     );
   }
 
+  if (sceneOn) {
+    return (
+      <RoomShell content={content} toolbar={toolbar} sceneMode>
+        <MachineRoomScene
+          content={content}
+          onGateSubmit={(code) => submitCode(room, code)}
+          hints={hintTriple}
+        />
+      </RoomShell>
+    );
+  }
+
   return (
-    <RoomShell content={content}>
+    <RoomShell content={content} toolbar={toolbar}>
       {content.puzzleIntro && <PuzzleIntro paragraphs={content.puzzleIntro} />}
 
       {room === "LIBRARY" && <Crossword />}

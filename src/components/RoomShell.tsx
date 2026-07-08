@@ -12,12 +12,19 @@ import { RoomIllustration } from "./RoomIllustration";
 export function RoomShell({
   content,
   cleared = false,
+  toolbar,
+  sceneMode = false,
   children,
 }: {
   content: RoomContent;
   /** When the room is already cleared, hide the under-construction banner so the cleared
       screen keeps a single golden accent (the Continue button). */
   cleared?: boolean;
+  /** Optional controls (e.g. the reading/scene view toggle) rendered under the goal. */
+  toolbar?: ReactNode;
+  /** In scene mode the explorable scene replaces the illustration and the flat
+      narrative; the chrome (title, goal, extras) stays. */
+  sceneMode?: boolean;
   children?: ReactNode;
 }) {
   const { t } = useI18n();
@@ -34,11 +41,13 @@ export function RoomShell({
         <p className="goal__text">{content.learningGoal}</p>
       </div>
 
-      <RoomIllustration room={content.room} />
+      {toolbar}
+
+      {!sceneMode && <RoomIllustration room={content.room} />}
 
       {content.wip && !cleared && <p className="wip">{t.wip.banner}</p>}
 
-      <NarrativeSections sections={content.intro} />
+      {!sceneMode && <NarrativeSections sections={content.intro} />}
 
       {children}
 

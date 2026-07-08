@@ -102,6 +102,16 @@ export const en = {
     yourTurn: "Your turn",
     extrasHeading: "Optional extras (each opens in a new tab)",
   },
+  scene: {
+    toggleExplore: "Explore the room (prototype)",
+    toggleReading: "Reading view",
+    viewLabel: "View",
+    regionLabel: "The Machine Room as an explorable scene",
+    hint: "Click the numbered objects in order. Every panel contains the same content as the reading view.",
+    close: "Close",
+    hotspot: "{num}. {title}",
+    hotspotVisited: "{num}. {title} (viewed)",
+  },
   crossword: {
     heading: "The crossword",
     intro: "Solve the clues. The answer to clue 4 opens the bottom doors of the bookcase.",
