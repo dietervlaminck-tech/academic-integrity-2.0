@@ -2,6 +2,11 @@
 // Drop into src/content/. All copy is final; do not paraphrase.
 // Sources: GenAI lecture deck (token/transformer examples), the live Canvas course
 // (crossword, papers exercise) and the verified Nyenrode AI policy documents.
+//
+// Deviation from the original pack (Dieter, 2026-07-08): the token rounds were
+// translated from Dutch to English so the e-learning is fully standalone; the pedagogy
+// (probabilities, context shifts, the rhyme trap) is unchanged. The original Dutch
+// versions remain in Puzzle_data.ts at the repo root.
 
 export type TokenCandidate = { text: string; probability: number };
 export type TokenRound = {
@@ -15,26 +20,26 @@ export type TokenRound = {
 export const tokenRounds: TokenRound[] = [
   {
     id: "r1-no-context",
-    stem: "Dieter eet graag …",
+    stem: "Dieter likes to eat …",
     candidates: [
-      { text: "een tosti", probability: 40 },
-      { text: "een pizza", probability: 30 },
-      { text: "een salade", probability: 25 },
-      { text: "een gazon", probability: 5 },
+      { text: "a toasted sandwich", probability: 40 },
+      { text: "a pizza", probability: 30 },
+      { text: "a salad", probability: 25 },
+      { text: "a lawn", probability: 5 },
     ],
     explanation:
       "With almost no context, the model falls back on frequency: common foods score high. " +
-      "Note that 'gazon' is not impossible, only improbable; the word 'eet' pulls food-tokens forward. " +
+      "Note that 'a lawn' is not impossible, only improbable; the word 'eat' pulls food-tokens forward. " +
       "The model is guessing exactly as you just did.",
   },
   {
     id: "r2-some-context",
-    stem: "Dieter houdt van tomaten en kaas. Hij eet graag …",
+    stem: "Dieter loves tomatoes and cheese. He likes to eat …",
     candidates: [
-      { text: "een tosti", probability: 38 },
-      { text: "een pizza", probability: 36 },
-      { text: "een salade Caprese", probability: 20 },
-      { text: "een gazon", probability: 1 },
+      { text: "a toasted sandwich", probability: 38 },
+      { text: "a pizza", probability: 36 },
+      { text: "a Caprese salad", probability: 20 },
+      { text: "a lawn", probability: 1 },
     ],
     explanation:
       "One sentence of context reshuffles the distribution: tomato-and-cheese dishes rise together. " +
@@ -42,17 +47,17 @@ export const tokenRounds: TokenRound[] = [
   },
   {
     id: "r3-rich-context",
-    stem: "Dieter houdt van tomaten en kaas. Hij lust geen brood. Hij eet graag …",
+    stem: "Dieter loves tomatoes and cheese. He does not eat bread. He likes to eat …",
     candidates: [
-      { text: "een salade Caprese", probability: 48 },
-      { text: "een pizza", probability: 34 },
-      { text: "een tosti", probability: 12 },
-      { text: "een gazon", probability: 1 },
+      { text: "a Caprese salad", probability: 48 },
+      { text: "a pizza", probability: 34 },
+      { text: "a toasted sandwich", probability: 12 },
+      { text: "a lawn", probability: 1 },
     ],
     explanation:
-      "'Geen brood' suppresses bread-based tokens (tosti crashes), and the tomato-cheese-no-bread " +
-      "pattern points to Caprese. The rule of the whole course: the better the context, the more " +
-      "precise the prediction. This is also why prompt quality matters.",
+      "'No bread' suppresses bread-based tokens (the toasted sandwich crashes), and the " +
+      "tomato-cheese-no-bread pattern points to a Caprese salad. The rule of the whole course: " +
+      "the better the context, the more precise the prediction. This is also why prompt quality matters.",
   },
   {
     id: "r4-restaurant-server",
@@ -82,22 +87,22 @@ export const tokenRounds: TokenRound[] = [
   },
   {
     id: "r6-rhyme-trap",
-    stem: "Ork, ork, ork, soep eet je met een …",
+    stem: "Fork, fork, fork, you eat your soup with a …",
     candidates: [
-      { text: "vork (the pattern answer)", probability: 78 },
-      { text: "lepel (the sensible answer)", probability: 18 },
-      { text: "mes", probability: 3 },
-      { text: "rietje", probability: 1 },
+      { text: "fork (the pattern answer)", probability: 78 },
+      { text: "spoon (the sensible answer)", probability: 18 },
+      { text: "knife", probability: 3 },
+      { text: "straw", probability: 1 },
     ],
     explanation:
-      "The trap round: the question asks what the PATTERN machine says, and the pattern says 'vork', " +
-      "because rhyme is a strong pattern. A reasoning model pauses: 'You do not eat soup with a fork; " +
-      "this is a joke; the sensible answer is lepel.' Show both model voices side by side here. " +
+      "The trap round: the question asks what the PATTERN machine says, and the pattern says 'fork', " +
+      "because rhyme and repetition are strong patterns. A reasoning model pauses: 'You do not eat " +
+      "soup with a fork; this is a joke; the sensible answer is a spoon.' " +
       "Lesson: fluency is not judgement, and reasoning steps are still generated text.",
   },
 ];
-// UI note for r6: the correct pick is "vork" (the player predicts the pattern machine),
-// after which the reasoning-model voice appears and explains "lepel".
+// UI note for r6: the correct pick is "fork" (the player predicts the pattern machine),
+// after which the reasoning-model voice appears and explains "spoon".
 
 // ---------- ROOM 3: SourceChecker (win: >= 4 of 5 correct -> code CONTEXT) ----------
 export type SourceCategory = "verifiable" | "fabricated" | "publisher-as-author" | "bare-domain";

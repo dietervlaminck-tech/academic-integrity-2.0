@@ -12,7 +12,12 @@ import { AlignmentBuilder } from "../components/AlignmentBuilder";
 import { Crossword } from "../components/Crossword";
 import { CodeGate } from "../components/CodeGate";
 import { HintButton } from "../components/HintButton";
+import { CharterBlock } from "../components/CharterBlock";
+import { LibraryScene } from "../components/LibraryScene";
 import { MachineRoomScene } from "../components/MachineRoomScene";
+import { StudyScene } from "../components/StudyScene";
+import { WorkshopScene } from "../components/WorkshopScene";
+import { DoorScene } from "../components/DoorScene";
 import { isCleared, nextRoom, type Room } from "../state/progress";
 import { useProgress } from "../state/useProgress";
 import { loadViewMode, saveViewMode, type ViewMode } from "../state/viewMode";
@@ -28,10 +33,9 @@ export function RoomScreen({ room }: { room: Room }) {
   const next = nextRoom(room);
   const hintTriple = (content.hintKey ? puzzleHints[content.hintKey] : null) ?? null;
 
-  // The explorable-scene prototype exists for the Machine Room only. Reading view is
-  // the default and the accessibility baseline.
-  const sceneCapable = room === "MACHINE_ROOM";
-  const sceneOn = sceneCapable && view === "scene" && !cleared;
+  // Every room has an explorable scene. Reading view is the default and the
+  // accessibility baseline.
+  const sceneOn = view === "scene" && !cleared;
 
   function switchView(mode: ViewMode) {
     setView(mode);
@@ -39,7 +43,7 @@ export function RoomScreen({ room }: { room: Room }) {
   }
 
   const toolbar =
-    sceneCapable && !cleared ? (
+    !cleared ? (
       <div className="viewtoggle" role="group" aria-label={t.scene.viewLabel}>
         <button
           type="button"
@@ -91,13 +95,20 @@ export function RoomScreen({ room }: { room: Room }) {
   }
 
   if (sceneOn) {
+    const sceneProps = {
+      content,
+      onGateSubmit: (code: string) => submitCode(room, code),
+      hints: hintTriple,
+    };
     return (
       <RoomShell content={content} toolbar={toolbar} sceneMode>
-        <MachineRoomScene
-          content={content}
-          onGateSubmit={(code) => submitCode(room, code)}
-          hints={hintTriple}
-        />
+        {room === "LIBRARY" && <LibraryScene {...sceneProps} />}
+        {room === "MACHINE_ROOM" && <MachineRoomScene {...sceneProps} />}
+        {room === "STUDY" && <StudyScene {...sceneProps} />}
+        {room === "WORKSHOP" && <WorkshopScene {...sceneProps} />}
+        {room === "DOOR" && (
+          <DoorScene {...sceneProps} charter={state.charter} onCharterChange={setCharter} />
+        )}
       </RoomShell>
     );
   }
@@ -120,23 +131,7 @@ export function RoomScreen({ room }: { room: Room }) {
 
       {room === "WORKSHOP" && <AlignmentBuilder />}
 
-      {room === "DOOR" && (
-        <div className="charter">
-          <label htmlFor="charter" className="room__eyebrow">
-            {t.charter.heading}
-          </label>
-          <p className="charter__prompt">{t.charter.prompt}</p>
-          <textarea
-            id="charter"
-            className="charter__input"
-            rows={3}
-            value={state.charter}
-            placeholder={t.charter.placeholder}
-            onChange={(e) => setCharter(e.target.value)}
-          />
-          <p className="video__caption">{t.charter.example}</p>
-        </div>
-      )}
+      {room === "DOOR" && <CharterBlock value={state.charter} onChange={setCharter} />}
 
       <CodeGate onSubmit={(code) => submitCode(room, code)} />
       {hintTriple && <HintButton hints={hintTriple} />}

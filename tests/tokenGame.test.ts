@@ -37,11 +37,12 @@ describe("token rounds data", () => {
     }
   });
 
-  it("the rhyme-trap round's most probable answer is the pattern answer 'vork'", () => {
+  it("the rhyme-trap round's most probable answer is the pattern answer 'fork'", () => {
     const rhyme = tokenRounds.find((r) => r.id === RHYME_ROUND_ID);
     expect(rhyme).toBeDefined();
     const best = rhyme!.candidates[correctIndex(rhyme!)];
-    expect(best!.text).toContain("vork");
+    expect(best!.text).toContain("fork");
+    expect(best!.text).toContain("pattern answer");
   });
 });
 

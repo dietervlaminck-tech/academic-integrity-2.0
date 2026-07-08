@@ -107,7 +107,7 @@ export const nl: Dict = {
     toggleExplore: "Verken de kamer (prototype)",
     toggleReading: "Leesweergave",
     viewLabel: "Weergave",
-    regionLabel: "De Machinekamer als verkenbare scène",
+    regionLabel: "{room} als verkenbare scène",
     hint: "Werk de genummerde objecten in volgorde af; elk afgerond object ontgrendelt het volgende. Elk paneel bevat dezelfde inhoud als de leesweergave.",
     close: "Sluiten",
     hotspot: "{num}. {title}",

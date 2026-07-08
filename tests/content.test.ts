@@ -3,9 +3,11 @@ import {
   courseGoals,
   machineRoomCheck,
   rooms,
+  roomScenes,
   startLetter,
   type RoomContent,
 } from "../src/content/rooms";
+import { tokenRounds } from "../src/content/puzzles";
 import { en } from "../src/i18n/en";
 import { nl } from "../src/i18n/nl";
 
@@ -38,11 +40,18 @@ describe("didactic scaffolding", () => {
     expect(JSON.stringify(post)).toContain("Reasoning models");
   });
 
-  it("the token game's Dutch examples are introduced with a gloss", () => {
+  it("the token game is fully English and introduced on its own terms", () => {
     const intro = rooms.MACHINE_ROOM.puzzleIntro!.join(" ");
-    expect(intro).toContain("Dutch");
-    expect(intro).toContain("tosti");
-    expect(intro).toContain("gazon");
+    expect(intro).toContain("Dieter");
+    expect(intro).toContain("context");
+    // Dieter (2026-07-08): the examples were translated; no Dutch may remain.
+    const gameText = JSON.stringify(tokenRounds);
+    expect(gameText).not.toMatch(/een |soep|vork|lepel|tosti|gazon/);
+  });
+
+  it("no copy references lectures or course moments outside the app (standalone)", () => {
+    const userFacing = JSON.stringify({ rooms, startLetter, courseGoals, machineRoomCheck });
+    expect(userFacing).not.toMatch(/lecture|Canvas course|in the original/i);
   });
 
   it("the Library teaches the three AI-policy principles before testing", () => {
@@ -70,6 +79,31 @@ describe("didactic scaffolding", () => {
       "WORKSHOP",
       "DOOR",
     ]);
+  });
+});
+
+describe("explorable scenes", () => {
+  it("every room's scene covers all intro sections, has unique ids, and ends at the gate", () => {
+    for (const [room, scene] of Object.entries(roomScenes)) {
+      const content = rooms[room as keyof typeof rooms];
+
+      const ids = new Set(scene.map((h) => h.id));
+      expect(ids.size, `${room} hotspot ids`).toBe(scene.length);
+
+      for (const h of scene) {
+        for (const i of h.sections ?? []) {
+          expect(i, `${room}/${h.id} section index ${i}`).toBeLessThan(content.intro.length);
+        }
+      }
+
+      expect(scene.filter((h) => h.kind === "gate"), `${room} gate count`).toHaveLength(1);
+      expect(scene[scene.length - 1]!.kind, `${room} last hotspot`).toBe("gate");
+
+      const covered = new Set(scene.flatMap((h) => h.sections ?? []));
+      for (let i = 0; i < content.intro.length; i++) {
+        expect(covered.has(i), `${room} intro[${i}] not shown by any hotspot`).toBe(true);
+      }
+    }
   });
 });
 

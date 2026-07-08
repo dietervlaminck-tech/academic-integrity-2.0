@@ -15,7 +15,7 @@ A standalone, privacy-clean web escape room implementing the reimagined Nyenrode
 ## Conventions
 - Vite + React + TypeScript, `strict: true`. No backend, no cookies, no analytics; state in `localStorage` only.
 - ALL user-facing copy lives in `src/content/` (typed objects) and `src/i18n/` — never hard-code strings in components.
-- English is the default language; keep the Dutch examples in the token game exactly as given (they are pedagogical).
+- English is the default language. The e-learning is standalone: no copy may reference lectures, decks or course moments outside this app. The token-game examples are English (translated from the original Dutch on Dieter's instruction, 2026-07-08; the Dutch originals stay in the root `Puzzle_data.ts` as reference). Module 4's Dutch assessment terms (toetsing vocabulary) stay, glossed inline.
 - Styling: CSS variables from the blueprint (`--ny-dark: #355071`, `--ny-corporate: #5D7291`, `--ny-accent: #FBBA20`, `--ny-light-bg: #F0F2F5`). Headings ALL CAPS with letter-spacing. Bottom bar: "NYENRODE. A REWARD FOR LIFE". Max one golden accent element per screen.
 - Typography and copy: never use em-dashes in user-facing text; use colons, semicolons or commas.
 - Accessibility: every puzzle keyboard-operable; WCAG AA contrast; the accent yellow only for large text/decoration on white.
