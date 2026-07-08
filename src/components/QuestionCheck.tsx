@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fmt, useI18n } from "../i18n";
 import {
   correctOptionIndex,
@@ -12,12 +12,28 @@ import {
 // answered options use aria-disabled (not the disabled attribute) so focus is never lost,
 // and each question's feedback plus the summary live in persistent aria-live regions.
 
-export function QuestionCheck({ questions }: { questions: CheckQuestion[] }) {
+export function QuestionCheck({
+  questions,
+  onAllAnswered,
+}: {
+  questions: CheckQuestion[];
+  /** Fired once when every question has been answered (regardless of score: the check
+      is formative). The scene view uses this to unlock the next hotspot. */
+  onAllAnswered?: () => void;
+}) {
   const { t } = useI18n();
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const answeredFired = useRef(false);
 
   const result = evaluateCheck(answers, questions);
   const allAnswered = Object.keys(answers).length === questions.length;
+
+  useEffect(() => {
+    if (allAnswered && !answeredFired.current) {
+      answeredFired.current = true;
+      onAllAnswered?.();
+    }
+  }, [allAnswered, onAllAnswered]);
 
   function pick(qid: string, index: number) {
     setAnswers((prev) => (prev[qid] !== undefined ? prev : { ...prev, [qid]: index }));
