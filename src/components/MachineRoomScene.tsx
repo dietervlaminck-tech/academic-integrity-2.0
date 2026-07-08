@@ -114,17 +114,27 @@ function SceneArt() {
 export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSceneProps) {
   const { t } = useI18n();
   const [active, setActive] = useState<string | null>(null);
-  const [visited, setVisited] = useState<Set<string>>(new Set());
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
   const hotspotRefs = useRef(new Map<string, HTMLButtonElement>());
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastActive = useRef<string | null>(null);
 
-  const nextId = machineRoomScene.find((h) => !visited.has(h.id))?.id ?? null;
+  // Linear design: a hotspot unlocks only when every hotspot before it is completed.
+  // Theory panels complete on opening; the control panel completes when the token game
+  // is passed; the terminal completes when both check questions are answered.
+  const firstIncomplete = machineRoomScene.findIndex((h) => !completed.has(h.id));
+  const nextIndex = firstIncomplete === -1 ? null : firstIncomplete;
+  const isUnlocked = (index: number) => nextIndex === null || index <= nextIndex;
 
-  function open(id: string) {
-    lastActive.current = id;
-    setVisited((prev) => new Set(prev).add(id));
-    setActive(id);
+  function complete(id: string) {
+    setCompleted((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+  }
+
+  function open(hotspot: SceneHotspotContent, index: number) {
+    if (!isUnlocked(index)) return;
+    lastActive.current = hotspot.id;
+    if (hotspot.kind === "intro") complete(hotspot.id);
+    setActive(hotspot.id);
   }
 
   function close() {
@@ -163,7 +173,7 @@ export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSc
         return (
           <>
             {content.puzzleIntro && <PuzzleIntro paragraphs={content.puzzleIntro} />}
-            <TokenPredictor />
+            <TokenPredictor onSolved={() => complete("panel")} />
           </>
         );
       case "post":
@@ -174,7 +184,10 @@ export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSc
                 sections={withoutTitleHeading(content.postPuzzle, hotspot.title)}
               />
             )}
-            <QuestionCheck questions={machineRoomCheck} />
+            <QuestionCheck
+              questions={machineRoomCheck}
+              onAllAnswered={() => complete("terminal")}
+            />
           </>
         );
       case "gate":
@@ -195,12 +208,17 @@ export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSc
         <SceneArt />
         {machineRoomScene.map((hotspot, i) => {
           const pos = HOTSPOT_POS[hotspot.id];
-          const isVisited = visited.has(hotspot.id);
-          const isNext = hotspot.id === nextId;
-          const label = fmt(isVisited ? t.scene.hotspotVisited : t.scene.hotspot, {
-            num: i + 1,
-            title: hotspot.title,
-          });
+          const done = completed.has(hotspot.id);
+          const unlocked = isUnlocked(i);
+          const isNext = i === nextIndex;
+          const label = fmt(
+            !unlocked
+              ? t.scene.hotspotLocked
+              : done
+                ? t.scene.hotspotVisited
+                : t.scene.hotspot,
+            { num: i + 1, title: hotspot.title },
+          );
           return (
             <button
               key={hotspot.id}
@@ -211,15 +229,17 @@ export function MachineRoomScene({ content, onGateSubmit, hints }: MachineRoomSc
               className={
                 "hotspot" +
                 (isNext ? " hotspot--next" : "") +
-                (isVisited ? " hotspot--visited" : "")
+                (done ? " hotspot--visited" : "") +
+                (!unlocked ? " hotspot--locked" : "")
               }
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               aria-label={label}
               aria-haspopup="dialog"
-              onClick={() => open(hotspot.id)}
+              aria-disabled={!unlocked}
+              onClick={() => open(hotspot, i)}
             >
               <span className="hotspot__badge" aria-hidden="true">
-                {i + 1}
+                {done ? "✓" : i + 1}
               </span>
               <span className="hotspot__label" aria-hidden="true">
                 {hotspot.title}

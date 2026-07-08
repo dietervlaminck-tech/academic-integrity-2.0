@@ -108,10 +108,11 @@ export const nl: Dict = {
     toggleReading: "Leesweergave",
     viewLabel: "Weergave",
     regionLabel: "De Machinekamer als verkenbare scène",
-    hint: "Klik de genummerde objecten in volgorde. Elk paneel bevat dezelfde inhoud als de leesweergave.",
+    hint: "Werk de genummerde objecten in volgorde af; elk afgerond object ontgrendelt het volgende. Elk paneel bevat dezelfde inhoud als de leesweergave.",
     close: "Sluiten",
     hotspot: "{num}. {title}",
-    hotspotVisited: "{num}. {title} (bekeken)",
+    hotspotVisited: "{num}. {title} (afgerond)",
+    hotspotLocked: "{num}. {title} (vergrendeld: rond eerst de vorige stap af)",
   },
   crossword: {
     heading: "Het kruiswoordraadsel",

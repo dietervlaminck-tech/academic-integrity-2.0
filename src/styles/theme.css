@@ -908,6 +908,20 @@ a {
   background: var(--ny-dark);
   opacity: 0.75;
 }
+/* Locked hotspots (linear design): visible so the path is legible, but inert. */
+.hotspot--locked {
+  cursor: not-allowed;
+}
+.hotspot--locked .hotspot__badge {
+  background: #a8b3c2;
+  box-shadow: none;
+}
+.hotspot--locked:hover .hotspot__badge {
+  background: #a8b3c2;
+}
+.hotspot--locked .hotspot__label {
+  opacity: 0.7;
+}
 .hotspot__label {
   font-size: 0.7rem;
   font-weight: 600;

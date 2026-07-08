@@ -107,10 +107,11 @@ export const en = {
     toggleReading: "Reading view",
     viewLabel: "View",
     regionLabel: "The Machine Room as an explorable scene",
-    hint: "Click the numbered objects in order. Every panel contains the same content as the reading view.",
+    hint: "Work through the numbered objects in order; finishing one unlocks the next. Every panel contains the same content as the reading view.",
     close: "Close",
     hotspot: "{num}. {title}",
-    hotspotVisited: "{num}. {title} (viewed)",
+    hotspotVisited: "{num}. {title} (done)",
+    hotspotLocked: "{num}. {title} (locked: finish the previous step first)",
   },
   crossword: {
     heading: "The crossword",
